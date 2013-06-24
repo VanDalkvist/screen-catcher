@@ -1,0 +1,173 @@
+﻿<Window x:Class="ScreenCatcher.View.Settings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel"
+        Width="500" 
+        Height="350"
+        Title="Настройки"
+        ResizeMode="NoResize"
+        Style="{StaticResource ChromeWindowStyle}"
+        vm:WindowProperties.DialogResult="{Binding CloseWindowFlag}"
+        vm:WindowProperties.MaximizeVisibility="Collapsed"
+        WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <GroupBox Header="Общие" Grid.Row="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Grid.Row="0">
+                        <TextBlock
+                                Margin="5"
+                                Text="Имя файла по умолчанию:" 
+                                HorizontalAlignment="Left"/>
+                        <TextBox
+                                Margin="5 5 80 5"
+                                Width="150"
+                                Text="{Binding Path=DefaultFileName, Mode=TwoWay}"
+                                HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                        <ComboBox
+                                Width="70"
+                                ItemsSource="{Binding Path=Extensions}"
+                                SelectedItem="{Binding Path=Extension}"
+                                HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                        <StackPanel Orientation="Horizontal" Margin="5 35 0 0">
+                            <RadioButton Content="Использовать текущую дату" IsChecked="{Binding UseDate, Mode=TwoWay}" Margin="0 0 10 0"/>
+                            <RadioButton Content="Использовать Guid" IsChecked="{Binding UseGuid, Mode=TwoWay}"/>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="1">
+                        <CheckBox x:Name="RunAsCheckBox"
+                                  Width="170"
+                                  IsChecked="{Binding Path=RunAs, Mode=TwoWay}"
+                                  Content="Редактировать?"
+                                  HorizontalAlignment="Left" />
+                        <ComboBox
+                            Margin="5,5,80,5"
+                            Width="150"
+                            ItemsSource="{Binding DefaultProgramms}"
+                            SelectedItem="{Binding Path=CurrentProgramm, Mode=TwoWay}"
+                            IsSynchronizedWithCurrentItem="True"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource DefaultProgrammStyle}">
+                        </ComboBox>
+                        <Button
+                            Content="+"
+                            Width="20"
+                            Command="{Binding ChooseProgrammCommand}"
+                            HorizontalAlignment="Right">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=RunAsCheckBox}" Value="False">
+                                            <Setter Property="Visibility" Value="Hidden"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </GroupBox>
+            <GroupBox 
+                Grid.Row="1"
+                Header="Сохранение без подверждения">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding Keys}"
+                            SelectedItem="{Binding Path=ScreenCatchKey}" />
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding ModifierKeys}"
+                            SelectedItem="{Binding Path=ScreenCatchModifierKey}" />
+                    </StackPanel>
+                    <Grid>
+                        <CheckBox x:Name="PathCheckBox"
+                                  Margin="5"
+                                  Content="Путь сохранения"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  IsChecked="{Binding Path=IsStorePath, Mode=TwoWay}" />
+                        <TextBox
+                            Margin="5 5 80 5"
+                            Width="200"
+                            Text="{Binding Path=DefaultPath, Mode=TwoWay}"
+                            HorizontalAlignment="Right">
+                            <TextBox.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding SetDefaultPathCommand}"/>
+                            </TextBox.InputBindings>
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=PathCheckBox}" Value="False">
+                                            <Setter Property="Visibility" Value="Hidden" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </StackPanel>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" Grid.Row="2">
+                <GroupBox Header="Сохранение с подверждением" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding Keys}"
+                            SelectedItem="{Binding Path=ScreenCatchWithConfirmationKey}" />
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding ModifierKeys}"
+                            SelectedItem="{Binding Path=ScreenCatchWithConfirmationModifierKey}" />
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Header="Сохранение активного окна" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding Keys}"
+                            SelectedItem="{Binding Path=ScreenCatchCurrentWindowKey}" />
+                        <ComboBox
+                            Width="100"
+                            ItemsSource="{Binding ModifierKeys}"
+                            SelectedItem="{Binding Path=ScreenCatchCurrentWindowModifierKey}" />
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </Grid>
+        <StatusBar
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            vm:WindowProperties.CanDragMove="True">
+            <StatusBarItem HorizontalContentAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <Button
+                        Width="50"
+                        IsDefault="True"
+                        Command="{Binding SaveSettingsCommand}"
+                        Content="OK" />
+                    <Button
+                        Width="50"
+                        IsCancel="True"
+                        Command="{Binding CloseCommand}"
+                        Content="Cancel" />
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

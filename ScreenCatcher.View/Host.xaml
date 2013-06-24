@@ -1,0 +1,20 @@
+﻿<Window x:Class="ScreenCatcher.View.Host"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel"
+        mc:Ignorable="d"
+        Title="Screen Catcher"
+        Height="350"
+        Width="525" 
+        viewModel:StandardCommands.LoadCommand="{Binding RegisterCommand}"
+        viewModel:StandardCommands.UnloadCommand="{Binding UnregisterCommand}"
+        Style="{StaticResource ChromeWindowStyle}">
+    <Grid>
+        <Button x:Name="Settings"
+                Content="Настройки"
+                Width="75"
+                Click="SettingsOnClick"/>
+    </Grid>
+</Window>

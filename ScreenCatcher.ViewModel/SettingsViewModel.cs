@@ -15,6 +15,7 @@ namespace ScreenCatcher.ViewModel
         private string _defaultPath;
         private bool _isStorePath;
         private bool _useDate;
+        private bool _useGuid;
         private Keys _screenCatchKey;
         private ModifierKeys _screenCatchModifierKey;
         private Keys _screenCatchWithConfirmationKey;
@@ -38,6 +39,7 @@ namespace ScreenCatcher.ViewModel
             DefaultPath = settings.DefaultPath;
             IsStorePath = settings.IsStorePath;
             UseDate = settings.UseDate;
+            UseGuid = settings.UseGuid;
             ScreenCatchKey = settings.ScreenCatch.Key;
             ScreenCatchModifierKey = settings.ScreenCatch.ModifierKey;
             ScreenCatchWithConfirmationKey = settings.ScreenCatchWithConfirmation.Key;
@@ -116,6 +118,19 @@ namespace ScreenCatcher.ViewModel
 
                 _useDate = value;
                 OnPropertyChanged("UseDate");
+            }
+        }
+
+        protected bool UseGuid
+        {
+            get { return _useGuid; }
+            set
+            {
+                if (_useGuid == value)
+                    return;
+
+                _useGuid = value;
+                OnPropertyChanged("UseGuid");
             }
         }
 

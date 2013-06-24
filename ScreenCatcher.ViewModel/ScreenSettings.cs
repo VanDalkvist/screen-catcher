@@ -26,6 +26,8 @@ namespace ScreenCatcher.ViewModel
 
         public bool UseDate { get; set; }
 
+        public bool UseGuid { get; set; }
+
         public HotKey ScreenCatch { get; set; }
 
         public HotKey ScreenCatchWithConfirmation { get; set; }
@@ -47,6 +49,7 @@ namespace ScreenCatcher.ViewModel
                 DefaultPath = DefaultPath,
                 IsStorePath = IsStorePath,
                 UseDate = UseDate,
+                UseGuid = UseGuid,
                 ScreenCatch = ScreenCatch,
                 ScreenCatchWithConfirmation = ScreenCatchWithConfirmation,
                 ScreenCatchCurrentWindow = ScreenCatchCurrentWindow,

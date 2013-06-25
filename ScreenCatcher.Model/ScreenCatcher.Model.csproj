@@ -44,11 +44,13 @@
   <ItemGroup>
     <Compile Include="HotKey.cs" />
     <Compile Include="ImageFormat.cs" />
+    <Compile Include="ModifierKeys.cs" />
     <Compile Include="Programm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScreenSettings.cs" />
     <Compile Include="Serializer.cs" />
     <Compile Include="SettingsBase.cs" />
+    <Compile Include="Suffix.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScreenCatcher.Common\ScreenCatcher.Common.csproj">

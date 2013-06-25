@@ -1,6 +1,5 @@
 using System;
 using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace ScreenCatcher.Model
 {

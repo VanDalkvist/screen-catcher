@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 
 using ScreenCatcher.Model;
+using ModifierKeys = ScreenCatcher.Model.ModifierKeys;
 
 namespace ScreenCatcher.ViewModel
 {
@@ -14,16 +15,19 @@ namespace ScreenCatcher.ViewModel
         private ImageFormat _extension;
         private string _defaultPath;
         private bool _isStorePath;
-        private bool _useDate;
-        private bool _useGuid;
+
         private Keys _screenCatchKey;
         private ModifierKeys _screenCatchModifierKey;
         private Keys _screenCatchWithConfirmationKey;
         private ModifierKeys _screenCatchWithConfirmationModifierKey;
         private Keys _screenCatchCurrentWindowKey;
         private ModifierKeys _screenCatchCurrentWindowModifierKey;
+
         private bool _runAs;
         private Programm _currentProgramm;
+
+        private bool _useSuffix;
+        private Suffix _currentSuffix;
 
         public SettingsViewModel(ScreenSettings settings)
         {
@@ -36,9 +40,8 @@ namespace ScreenCatcher.ViewModel
             DefaultFileName = settings.DefaultFileName;
             Extension = settings.Extension;
             DefaultPath = settings.DefaultPath;
-            IsStorePath = settings.IsStorePath;
-            UseDate = settings.UseDate;
-            UseGuid = settings.UseGuid;
+            IsStorePath = settings.UseStorePath;
+            UseSuffix = settings.UseSuffix;
             ScreenCatchKey = settings.ScreenCatch.Key;
             ScreenCatchModifierKey = settings.ScreenCatch.ModifierKey;
             ScreenCatchWithConfirmationKey = settings.ScreenCatchWithConfirmation.Key;
@@ -46,7 +49,9 @@ namespace ScreenCatcher.ViewModel
             ScreenCatchCurrentWindowKey = settings.ScreenCatchCurrentWindow.Key;
             ScreenCatchCurrentWindowModifierKey = settings.ScreenCatchCurrentWindow.ModifierKey;
             RunAs = settings.RunAs;
-            CurrentProgramm = settings.CurrentProgramm;
+
+            _currentProgramm = settings.CurrentProgramm;
+            _currentSuffix = settings.CurrentSuffix;
         }
 
         private void Sibscribe()
@@ -103,45 +108,6 @@ namespace ScreenCatcher.ViewModel
 
                 _isStorePath = value;
                 OnPropertyChanged("IsStorePath");
-            }
-        }
-
-        public bool UseDate
-        {
-            get { return _useDate; }
-            set
-            {
-                if (_useDate == value)
-                    return;
-
-                _useDate = value;
-                OnPropertyChanged("UseDate");
-            }
-        }
-
-        public bool UseGuid
-        {
-            get { return _useGuid; }
-            set
-            {
-                if (_useGuid == value)
-                    return;
-
-                _useGuid = value;
-                OnPropertyChanged("UseGuid");
-            }
-        }
-
-        public Keys Key
-        {
-            get { return _screenCatchKey; }
-            set
-            {
-                if (_screenCatchKey == value)
-                    return;
-
-                _screenCatchKey = value;
-                OnPropertyChanged("Key");
             }
         }
 
@@ -244,7 +210,8 @@ namespace ScreenCatcher.ViewModel
                 if (_currentProgramm == Programm.Paint)
                     return;
 
-                _currentProgramm = Programm.Paint;
+                if (value)
+                    _currentProgramm = Programm.Paint;
                 OnPropertyChanged("InPaint");
                 OnPropertyChanged("InSelf");
             }
@@ -258,22 +225,53 @@ namespace ScreenCatcher.ViewModel
                 if (_currentProgramm == Programm.Self)
                     return;
 
-                _currentProgramm = Programm.Self;
+                if (value)
+                    _currentProgramm = Programm.Self;
                 OnPropertyChanged("InSelf");
                 OnPropertyChanged("InPaint");
             }
         }
 
-        public Programm CurrentProgramm
+        public bool UseSuffix
         {
-            get { return _currentProgramm; }
+            get { return _useSuffix; }
             set
             {
-                if (_currentProgramm == value)
+                if (_useSuffix == value)
                     return;
 
-                _currentProgramm = value;
-                OnPropertyChanged("CurrentProgramm");
+                _useSuffix = value;
+                OnPropertyChanged("UseSuffix");
+            }
+        }
+
+        public bool UseDate
+        {
+            get { return _currentSuffix == Suffix.Date; }
+            set
+            {
+                if (_currentSuffix == Suffix.Date)
+                    return;
+
+                if (value)
+                    _currentSuffix = Suffix.Date;
+                OnPropertyChanged("UseDate");
+                OnPropertyChanged("UseGuid");
+            }
+        }
+
+        public bool UseGuid
+        {
+            get { return _currentSuffix == Suffix.Guid; }
+            set
+            {
+                if (_currentSuffix == Suffix.Guid)
+                    return;
+
+                if (value)
+                    _currentSuffix = Suffix.Guid;
+                OnPropertyChanged("UseGuid");
+                OnPropertyChanged("UseDate");
             }
         }
 
@@ -305,9 +303,7 @@ namespace ScreenCatcher.ViewModel
                 DefaultFileName = _defaultFileName,
                 Extension = _extension,
                 DefaultPath = _defaultPath,
-                IsStorePath = _isStorePath,
-                UseDate = _useDate,
-                UseGuid = _useGuid,
+                UseStorePath = _isStorePath,
                 ScreenCatch = new HotKey
                 {
                     Key = _screenCatchKey,
@@ -323,8 +319,10 @@ namespace ScreenCatcher.ViewModel
                     Key = _screenCatchCurrentWindowKey,
                     ModifierKey = _screenCatchCurrentWindowModifierKey
                 },
+                RunAs = _runAs,
                 CurrentProgramm = _currentProgramm,
-                RunAs = _runAs
+                UseSuffix = UseSuffix,
+                CurrentSuffix = _currentSuffix
             };
             settings.Save();
 
@@ -332,6 +330,7 @@ namespace ScreenCatcher.ViewModel
         }
 
         private ICommand _setDefaultPathCommand;
+
         public ICommand SetDefaultPathCommand
         {
             get { return _setDefaultPathCommand ?? (_setDefaultPathCommand = new RelayCommand(SetDefaultPath)); }

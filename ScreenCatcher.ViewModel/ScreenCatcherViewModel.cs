@@ -9,6 +9,7 @@ using Size = System.Drawing.Size;
 
 using ScreenCatcher.Logic;
 using ScreenCatcher.Model;
+using ModifierKeys = ScreenCatcher.Model.ModifierKeys;
 
 namespace ScreenCatcher.ViewModel
 {
@@ -45,7 +46,7 @@ namespace ScreenCatcher.ViewModel
 
         private void RegisterKey(Action<object> catchScreenFunc, Keys key, ModifierKeys modifierKey)
         {
-            _hotKeyRegistrator.RegisterGlobalHotkey(catchScreenFunc, key, modifierKey);
+            _hotKeyRegistrator.RegisterGlobalHotkey(catchScreenFunc, key, (System.Windows.Input.ModifierKeys) modifierKey);
         }
 
         private ICommand _unregisterCommand;
@@ -69,10 +70,10 @@ namespace ScreenCatcher.ViewModel
             var settings = new ScreenSettings
             {
                 DefaultFileName = DefaultSettings.FileName,
-                IsStorePath = false,
+                UseStorePath = false,
                 Extension = ImageFormat.Bmp,
-                UseDate = true,
-                UseGuid = false,
+                UseSuffix = true,
+                CurrentSuffix = Suffix.Date,
                 ScreenCatch = new HotKey
                 {
                     Key = Keys.PrintScreen,

@@ -30,14 +30,23 @@ namespace ScreenCatcher.ViewModel
         public static string CreateFileName(this ScreenSettings settings)
         {
             var path = String.Empty;
-            if (settings.IsStorePath && !String.IsNullOrEmpty(settings.DefaultPath))
+            if (settings.UseStorePath && !String.IsNullOrEmpty(settings.DefaultPath))
                 path = settings.DefaultPath + Constants.Delimiter;
-            object addon = DateTime.Now.Ticks;
-            if (settings.UseDate)
-                addon = DateTime.Now.ToString("dd_MM_yyyy_(HH-mm-ss-fff)");
-            if (settings.UseGuid)
-                addon = Guid.NewGuid();
-            return path + settings.DefaultFileName + Constants.NameSeparator + addon + Constants.Dot + settings.Extension.ToString().ToLower();
+            var addon = string.Empty;
+            if (settings.UseSuffix)
+            {
+                addon += Constants.NameSeparator;
+                switch (settings.CurrentSuffix)
+                {
+                    case Suffix.Date:
+                        addon = DateTime.Now.ToString("dd_MM_yyyy_(HH-mm-ss-fff)");
+                        break;
+                    case Suffix.Guid:
+                        addon = Guid.NewGuid().ToString();
+                        break;
+                }
+            }
+            return path + settings.DefaultFileName + addon + Constants.Dot + settings.Extension.ToString().ToLower();
         }
     }
 }

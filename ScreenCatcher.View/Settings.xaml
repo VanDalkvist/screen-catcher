@@ -22,7 +22,7 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <GroupBox Header="Общие" Grid.Row="0">
-                <Grid>
+                <Grid Grid.Row="0">
                     <Grid.RowDefinitions>
                         <RowDefinition />
                         <RowDefinition />
@@ -45,19 +45,37 @@
                             SelectedItem="{Binding Path=Extension}"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"/>
-                        <StackPanel Orientation="Horizontal" Margin="5 35 0 0">
-                            <RadioButton
-                                Content="Использовать текущую дату"
-                                IsChecked="{Binding Path=UseDate, Mode=TwoWay}"
-                                Margin="0 5 10 5"/>
-                            <RadioButton
-                                Content="Использовать Guid"
-                                IsChecked="{Binding Path=UseGuid, Mode=TwoWay}"
-                                Margin="0 5"/>
-                        </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1">
-                        <CheckBox x:Name="RunAsCheckBox"
+                        <CheckBox x:Name="SuffixCheck"
+                                    IsChecked="{Binding Path=UseSuffix, Mode=TwoWay}"
+                                    Content="Использовать суффикс в имени файла"
+                                    HorizontalAlignment="Left"
+                                    Margin="5"/>
+                        <StackPanel
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right">
+                            <RadioButton
+                                Content="Текущая дата"
+                                IsChecked="{Binding Path=UseDate, Mode=TwoWay}"
+                                Margin="5 5 65 5"/>
+                            <RadioButton
+                                Content="Guid"
+                                IsChecked="{Binding Path=UseGuid, Mode=TwoWay}"
+                                Margin="0 5 30 5"/>
+                            <StackPanel.Style>
+                                <Style TargetType="{x:Type StackPanel}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=SuffixCheck}" Value="False">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                        </StackPanel>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <CheckBox x:Name="RunAsCheck"
                                   Width="170"
                                   IsChecked="{Binding Path=RunAs, Mode=TwoWay}"
                                   Content="Редактировать?"
@@ -66,20 +84,17 @@
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
                             <RadioButton
+                                Margin="5 5 63 5"
+                                Content="ScreenCatcher"
+                                IsChecked="{Binding Path=InSelf, Mode=TwoWay}"/>
+                            <RadioButton
                                 Content="Paint"
                                 IsChecked="{Binding Path=InPaint, Mode=TwoWay}"
-                                Margin="0 5 30 5">
-                            </RadioButton>
-                            <RadioButton
-                                Content="ScreenCatcher"
-                                IsChecked="{Binding Path=InSelf, Mode=TwoWay}"
-                                Margin="0 5">
-                            </RadioButton>
-                            
+                                Margin="0 5 28 5"/>
                             <StackPanel.Style>
                                 <Style TargetType="{x:Type StackPanel}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=RunAsCheckBox}" Value="False">
+                                        <DataTrigger Binding="{Binding Path=IsChecked, ElementName=RunAsCheck}" Value="False">
                                             <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>

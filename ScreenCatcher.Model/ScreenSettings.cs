@@ -9,7 +9,6 @@ namespace ScreenCatcher.Model
     {
         public ScreenSettings()
         {
-            DefaultFileName = string.Empty;
             ScreenCatch = new HotKey();
             ScreenCatchWithConfirmation = new HotKey();
             ScreenCatchCurrentWindow = new HotKey();
@@ -21,11 +20,11 @@ namespace ScreenCatcher.Model
 
         public string DefaultPath { get; set; }
 
-        public bool IsStorePath { get; set; }
+        public bool UseStorePath { get; set; }
 
-        public bool UseDate { get; set; }
+        public bool UseSuffix { get; set; }
 
-        public bool UseGuid { get; set; }
+        public Suffix CurrentSuffix { get; set; }
 
         public HotKey ScreenCatch { get; set; }
 
@@ -44,9 +43,8 @@ namespace ScreenCatcher.Model
                 DefaultFileName = DefaultFileName,
                 Extension = Extension,
                 DefaultPath = DefaultPath,
-                IsStorePath = IsStorePath,
-                UseDate = UseDate,
-                UseGuid = UseGuid,
+                UseStorePath = UseStorePath,
+                CurrentSuffix = CurrentSuffix,
                 ScreenCatch = ScreenCatch,
                 ScreenCatchWithConfirmation = ScreenCatchWithConfirmation,
                 ScreenCatchCurrentWindow = ScreenCatchCurrentWindow,

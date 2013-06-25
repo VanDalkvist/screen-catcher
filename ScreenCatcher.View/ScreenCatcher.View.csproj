@@ -113,6 +113,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScreenCatcher.Model\ScreenCatcher.Model.csproj">
+      <Project>{A7D1E5B9-3448-4F53-ACC7-C9FAD8833849}</Project>
+      <Name>ScreenCatcher.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScreenCatcher.ViewModel\ScreenCatcher.ViewModel.csproj">
       <Project>{627EDED6-F812-43AA-8E53-AC622315A86B}</Project>
       <Name>ScreenCatcher.ViewModel</Name>

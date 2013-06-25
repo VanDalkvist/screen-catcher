@@ -5,11 +5,8 @@ namespace ScreenCatcher.Common
         public const string SettingsFileName = "settings.xml";
 
         public const char Dot = '.';
-
         public const char Delimiter = '\\';
-
         public const char InverseDelimiter = '/';
-
         public const char NameSeparator = '_';
     }
 }

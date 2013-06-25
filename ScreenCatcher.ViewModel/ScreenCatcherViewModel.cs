@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Forms;
 using System.Windows.Input;
 using Size = System.Drawing.Size;
 
+using ScreenCatcher.Logic;
 using ScreenCatcher.Model;
 
 namespace ScreenCatcher.ViewModel
@@ -13,8 +15,6 @@ namespace ScreenCatcher.ViewModel
     public class ScreenCatcherViewModel : ViewModelBase
     {
         private HotkeyRegistrator _hotKeyRegistrator;
-
-        // todo: move actions dictionary here
 
         private ICommand _registerCommand;
         public ICommand RegisterCommand
@@ -34,22 +34,18 @@ namespace ScreenCatcher.ViewModel
 
             var settings = GetScreenSettings();
             if (settings.ScreenCatch.Key != Keys.None)
-                _hotKeyRegistrator.RegisterGlobalHotkey(
-                    CatchScreen,
-                    settings.ScreenCatch.Key,
-                    settings.ScreenCatch.ModifierKey);
+                RegisterKey(CatchScreen, settings.ScreenCatch.Key, settings.ScreenCatch.ModifierKey);
 
             if (settings.ScreenCatchCurrentWindow.Key != Keys.None)
-                _hotKeyRegistrator.RegisterGlobalHotkey(
-                    CatchCurrentWindow,
-                    settings.ScreenCatchCurrentWindow.Key,
-                    settings.ScreenCatchCurrentWindow.ModifierKey);
+                RegisterKey(CatchCurrentWindow, settings.ScreenCatchCurrentWindow.Key, settings.ScreenCatchCurrentWindow.ModifierKey);
 
             if (settings.ScreenCatchWithConfirmation.Key != Keys.None)
-                _hotKeyRegistrator.RegisterGlobalHotkey(
-                    CatchScreenWithConfirmation,
-                    settings.ScreenCatchWithConfirmation.Key,
-                    settings.ScreenCatchWithConfirmation.ModifierKey);
+                RegisterKey(CatchScreenWithConfirmation, settings.ScreenCatchWithConfirmation.Key, settings.ScreenCatchWithConfirmation.ModifierKey);
+        }
+
+        private void RegisterKey(Action<object> catchScreenFunc, Keys key, ModifierKeys modifierKey)
+        {
+            _hotKeyRegistrator.RegisterGlobalHotkey(catchScreenFunc, key, modifierKey);
         }
 
         private ICommand _unregisterCommand;
@@ -65,22 +61,62 @@ namespace ScreenCatcher.ViewModel
 
         public ScreenSettings GetScreenSettings()
         {
-            return SettingsBase.Load<ScreenSettings>() ?? new ScreenSettings();
+            return SettingsBase.Load<ScreenSettings>() ?? GetDefaultSettings();
+        }
+
+        private ScreenSettings GetDefaultSettings()
+        {
+            var settings = new ScreenSettings
+            {
+                DefaultFileName = DefaultSettings.FileName,
+                IsStorePath = false,
+                Extension = ImageFormat.Bmp,
+                UseDate = true,
+                UseGuid = false,
+                ScreenCatch = new HotKey
+                {
+                    Key = Keys.PrintScreen,
+                    ModifierKey = ModifierKeys.None
+                },
+                ScreenCatchCurrentWindow = new HotKey
+                {
+                    Key = Keys.PrintScreen,
+                    ModifierKey = ModifierKeys.Control
+                },
+                ScreenCatchWithConfirmation = new HotKey
+                {
+                    Key = Keys.PrintScreen,
+                    ModifierKey = ModifierKeys.Alt
+                },
+                CurrentProgramm = Programm.Paint,
+                RunAs = false
+            };
+            settings.Save();
+            return settings;
         }
 
         private void CatchScreen(object arg)
         {
             var settings = GetScreenSettings();
 
-            var screenWidth = Convert.ToInt32(SystemParameters.VirtualScreenWidth);
-            var screenHeight = Convert.ToInt32(SystemParameters.VirtualScreenHeight);
-            var screenLeft = Convert.ToInt32(SystemParameters.VirtualScreenLeft);
-            var screenTop = Convert.ToInt32(SystemParameters.VirtualScreenTop);
-            using (var screenshot = new Bitmap(screenWidth, screenHeight, PixelFormat.Format32bppArgb))
+            string fileName;
+            using (var screenshot = new Bitmap(VirtualScreen.Width, VirtualScreen.Height, PixelFormat.Format32bppArgb))
             using (var graphics = Graphics.FromImage(screenshot))
             {
-                graphics.CopyFromScreen(screenLeft, screenTop, 0, 0, screenshot.Size, CopyPixelOperation.SourceCopy);
-                screenshot.Save(settings.CreateFileName(), settings.Extension.Parse());
+                graphics.CopyFromScreen(VirtualScreen.Left, VirtualScreen.Top, 0, 0, screenshot.Size, CopyPixelOperation.SourceCopy);
+                fileName = settings.CreateFileName();
+                var extension = settings.Extension.Parse();
+                screenshot.Save(fileName, extension);
+            }
+            if (settings.RunAs)
+                OpenForEdit(settings, fileName);
+        }
+
+        private void OpenForEdit(ScreenSettings settings, string fileName)
+        {
+            if (settings.CurrentProgramm == Programm.Paint)
+            {
+                Process.Start(DefaultSettings.Paint, fileName);
             }
         }
 
@@ -88,15 +124,11 @@ namespace ScreenCatcher.ViewModel
         {
             var settings = GetScreenSettings();
 
-            var screenWidth = Convert.ToInt32(SystemParameters.VirtualScreenWidth);
-            var screenHeight = Convert.ToInt32(SystemParameters.VirtualScreenHeight);
-            var screenLeft = Convert.ToInt32(SystemParameters.VirtualScreenLeft);
-            var screenTop = Convert.ToInt32(SystemParameters.VirtualScreenTop);
-
-            using (var screenshot = new Bitmap(screenWidth, screenHeight, PixelFormat.Format32bppArgb))
+            string fileName = string.Empty;
+            using (var screenshot = new Bitmap(VirtualScreen.Width, VirtualScreen.Height, PixelFormat.Format32bppArgb))
             using (var graphics = Graphics.FromImage(screenshot))
             {
-                graphics.CopyFromScreen(screenLeft, screenTop, 0, 0, screenshot.Size, CopyPixelOperation.SourceCopy);
+                graphics.CopyFromScreen(VirtualScreen.Left, VirtualScreen.Top, 0, 0, screenshot.Size, CopyPixelOperation.SourceCopy);
 
                 var saveImageDialog = new SaveFileDialog
                 {
@@ -107,9 +139,12 @@ namespace ScreenCatcher.ViewModel
                 if (saveImageDialog.ShowDialog() == DialogResult.OK)
                 {
                     var imageFormat = PathParser.GetExtension(saveImageDialog.FileName);
-                    screenshot.Save(saveImageDialog.FileName, imageFormat);
+                    fileName = saveImageDialog.FileName;
+                    screenshot.Save(fileName, imageFormat);
                 }
             }
+            if (settings.RunAs)
+                OpenForEdit(settings, fileName);
         }
 
         private void CatchCurrentWindow(object arg)
@@ -117,6 +152,8 @@ namespace ScreenCatcher.ViewModel
             var settings = GetScreenSettings();
             var bounds = WinAPI.GetActiveWindowBounds();
             const int shift = 0;
+
+            string fileName;
             using (var bitmap = new Bitmap(bounds.Width - 2 * shift, bounds.Height - 2 * shift, PixelFormat.Format32bppArgb))
             {
                 using (var graphics = Graphics.FromImage(bitmap))
@@ -126,8 +163,11 @@ namespace ScreenCatcher.ViewModel
                         new Size(bounds.Size.Width - 2 * shift, bounds.Size.Height - 2 * shift),
                         CopyPixelOperation.SourceCopy);
                 }
-                bitmap.Save(settings.CreateFileName(), settings.Extension.Parse());
+                fileName = settings.CreateFileName();
+                bitmap.Save(fileName, settings.Extension.Parse());
             }
+            if (settings.RunAs)
+                OpenForEdit(settings, fileName);
         }
 
         //private ICommand _openSettingsCommand;

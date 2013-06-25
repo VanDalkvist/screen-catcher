@@ -1,19 +1,18 @@
 using System;
-using ScreenCatcher.Model;
 
-namespace ScreenCatcher.ViewModel
+using ScreenCatcher.ViewModel;
+
+namespace ScreenCatcher.Model
 {
     [Serializable]
     public class ScreenSettings : SettingsBase
     {
         public ScreenSettings()
         {
-            DefaultFileName = "";
+            DefaultFileName = string.Empty;
             ScreenCatch = new HotKey();
             ScreenCatchWithConfirmation = new HotKey();
             ScreenCatchCurrentWindow = new HotKey();
-            DefaultProgramms = new ProgrammInfo[] { };
-            CurrentProgramm = new ProgrammInfo();
         }
 
         public string DefaultFileName { get; set; }
@@ -35,10 +34,8 @@ namespace ScreenCatcher.ViewModel
         public HotKey ScreenCatchCurrentWindow { get; set; }
 
         public bool RunAs { get; set; }
-
-        public ProgrammInfo[] DefaultProgramms { get; set; }
-
-        public ProgrammInfo CurrentProgramm { get; set; }
+        
+        public Programm CurrentProgramm { get; set; }
 
         public override object Clone()
         {
@@ -54,7 +51,6 @@ namespace ScreenCatcher.ViewModel
                 ScreenCatchWithConfirmation = ScreenCatchWithConfirmation,
                 ScreenCatchCurrentWindow = ScreenCatchCurrentWindow,
                 RunAs = RunAs,
-                DefaultProgramms = DefaultProgramms,
                 CurrentProgramm = CurrentProgramm
             };
         }

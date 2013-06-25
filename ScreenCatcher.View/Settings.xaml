@@ -30,22 +30,30 @@
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
                         <TextBlock
-                                Margin="5"
-                                Text="Имя файла по умолчанию:" 
-                                HorizontalAlignment="Left"/>
+                            Margin="5"
+                            Text="Имя файла по умолчанию:" 
+                            HorizontalAlignment="Left"/>
                         <TextBox
-                                Margin="5 5 80 5"
-                                Width="150"
-                                Text="{Binding Path=DefaultFileName, Mode=TwoWay}"
-                                HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                            Margin="5 5 80 5"
+                            Width="150"
+                            Text="{Binding Path=DefaultFileName, Mode=TwoWay}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"/>
                         <ComboBox
-                                Width="70"
-                                ItemsSource="{Binding Path=Extensions}"
-                                SelectedItem="{Binding Path=Extension}"
-                                HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                            Width="70"
+                            ItemsSource="{Binding Path=Extensions}"
+                            SelectedItem="{Binding Path=Extension}"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"/>
                         <StackPanel Orientation="Horizontal" Margin="5 35 0 0">
-                            <RadioButton Content="Использовать текущую дату" IsChecked="{Binding UseDate, Mode=TwoWay}" Margin="0 0 10 0"/>
-                            <RadioButton Content="Использовать Guid" IsChecked="{Binding UseGuid, Mode=TwoWay}"/>
+                            <RadioButton
+                                Content="Использовать текущую дату"
+                                IsChecked="{Binding Path=UseDate, Mode=TwoWay}"
+                                Margin="0 5 10 5"/>
+                            <RadioButton
+                                Content="Использовать Guid"
+                                IsChecked="{Binding Path=UseGuid, Mode=TwoWay}"
+                                Margin="0 5"/>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="1">
@@ -54,30 +62,30 @@
                                   IsChecked="{Binding Path=RunAs, Mode=TwoWay}"
                                   Content="Редактировать?"
                                   HorizontalAlignment="Left" />
-                        <ComboBox
-                            Margin="5,5,80,5"
-                            Width="150"
-                            ItemsSource="{Binding DefaultProgramms}"
-                            SelectedItem="{Binding Path=CurrentProgramm, Mode=TwoWay}"
-                            IsSynchronizedWithCurrentItem="True"
-                            HorizontalAlignment="Right"
-                            Style="{StaticResource DefaultProgrammStyle}">
-                        </ComboBox>
-                        <Button
-                            Content="+"
-                            Width="20"
-                            Command="{Binding ChooseProgrammCommand}"
+                        <StackPanel
+                            Orientation="Horizontal"
                             HorizontalAlignment="Right">
-                            <Button.Style>
-                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                            <RadioButton
+                                Content="Paint"
+                                IsChecked="{Binding Path=InPaint, Mode=TwoWay}"
+                                Margin="0 5 30 5">
+                            </RadioButton>
+                            <RadioButton
+                                Content="ScreenCatcher"
+                                IsChecked="{Binding Path=InSelf, Mode=TwoWay}"
+                                Margin="0 5">
+                            </RadioButton>
+                            
+                            <StackPanel.Style>
+                                <Style TargetType="{x:Type StackPanel}">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Path=IsChecked, ElementName=RunAsCheckBox}" Value="False">
-                                            <Setter Property="Visibility" Value="Hidden"/>
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </Button.Style>
-                        </Button>
+                            </StackPanel.Style>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </GroupBox>

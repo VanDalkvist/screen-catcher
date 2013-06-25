@@ -41,9 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Constants.cs" />
-    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
-    <Compile Include="Extensions\DictionaryExtensions.cs" />
-    <Compile Include="Extensions\WindowExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectHelper.cs" />
+    <Compile Include="Extensions\DictionaryHelper.cs" />
+    <Compile Include="Extensions\WindowHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingletonInstance.cs" />
   </ItemGroup>

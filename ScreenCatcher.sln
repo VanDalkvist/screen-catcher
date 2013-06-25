@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenCatcher.Model", "Scre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenCatcher.View", "ScreenCatcher.View\ScreenCatcher.View.csproj", "{717B8533-4A69-4A74-96BD-B426539F17FA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenCatcher.Logic", "ScreenCatcher.Logic\ScreenCatcher.Logic.csproj", "{750FFCBF-FE86-4F50-AB78-7DE184C701F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{717B8533-4A69-4A74-96BD-B426539F17FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{717B8533-4A69-4A74-96BD-B426539F17FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{717B8533-4A69-4A74-96BD-B426539F17FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{750FFCBF-FE86-4F50-AB78-7DE184C701F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{750FFCBF-FE86-4F50-AB78-7DE184C701F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{750FFCBF-FE86-4F50-AB78-7DE184C701F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{750FFCBF-FE86-4F50-AB78-7DE184C701F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

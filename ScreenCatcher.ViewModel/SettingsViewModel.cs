@@ -23,8 +23,7 @@ namespace ScreenCatcher.ViewModel
         private Keys _screenCatchCurrentWindowKey;
         private ModifierKeys _screenCatchCurrentWindowModifierKey;
         private bool _runAs;
-        private IList<ProgrammInfo> _defaultProgramms;
-        private ProgrammInfo _currentProgramm;
+        private Programm _currentProgramm;
 
         public SettingsViewModel(ScreenSettings settings)
         {
@@ -47,7 +46,6 @@ namespace ScreenCatcher.ViewModel
             ScreenCatchCurrentWindowKey = settings.ScreenCatchCurrentWindow.Key;
             ScreenCatchCurrentWindowModifierKey = settings.ScreenCatchCurrentWindow.ModifierKey;
             RunAs = settings.RunAs;
-            DefaultProgramms = settings.DefaultProgramms != null ? settings.DefaultProgramms.ToList() : new List<ProgrammInfo>();
             CurrentProgramm = settings.CurrentProgramm;
         }
 
@@ -121,7 +119,7 @@ namespace ScreenCatcher.ViewModel
             }
         }
 
-        protected bool UseGuid
+        public bool UseGuid
         {
             get { return _useGuid; }
             set
@@ -238,20 +236,35 @@ namespace ScreenCatcher.ViewModel
             }
         }
 
-        public IList<ProgrammInfo> DefaultProgramms
+        public bool InPaint
         {
-            get { return _defaultProgramms; }
+            get { return _currentProgramm == Programm.Paint; }
             set
             {
-                if (_defaultProgramms == value)
+                if (_currentProgramm == Programm.Paint)
                     return;
 
-                _defaultProgramms = value;
-                OnPropertyChanged("DefaultProgramms");
+                _currentProgramm = Programm.Paint;
+                OnPropertyChanged("InPaint");
+                OnPropertyChanged("InSelf");
             }
         }
 
-        public ProgrammInfo CurrentProgramm
+        public bool InSelf
+        {
+            get { return _currentProgramm == Programm.Self; }
+            set
+            {
+                if (_currentProgramm == Programm.Self)
+                    return;
+
+                _currentProgramm = Programm.Self;
+                OnPropertyChanged("InSelf");
+                OnPropertyChanged("InPaint");
+            }
+        }
+
+        public Programm CurrentProgramm
         {
             get { return _currentProgramm; }
             set
@@ -294,6 +307,7 @@ namespace ScreenCatcher.ViewModel
                 DefaultPath = _defaultPath,
                 IsStorePath = _isStorePath,
                 UseDate = _useDate,
+                UseGuid = _useGuid,
                 ScreenCatch = new HotKey
                 {
                     Key = _screenCatchKey,
@@ -309,7 +323,6 @@ namespace ScreenCatcher.ViewModel
                     Key = _screenCatchCurrentWindowKey,
                     ModifierKey = _screenCatchCurrentWindowModifierKey
                 },
-                DefaultProgramms = _defaultProgramms.ToArray(),
                 CurrentProgramm = _currentProgramm,
                 RunAs = _runAs
             };
@@ -345,27 +358,6 @@ namespace ScreenCatcher.ViewModel
         protected override void Close(object obj)
         {
             OnClosed();
-        }
-
-        private ICommand _chooseProgrammCommand;
-        public ICommand ChooseProgrammCommand
-        {
-            get { return _chooseProgrammCommand ?? (_chooseProgrammCommand = new RelayCommand(ChooseProgramm)); }
-        }
-
-        private void ChooseProgramm(object obj)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Title = @"Select programm:",
-                Filter = @"Applications (*.exe)|*.exe"
-            };
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                var programmName = openFileDialog.FileName;
-                DefaultProgramms.Add(PathParser.GetFileInfo(programmName));
-                OnPropertyChanged("DefaultProgramms");
-            }
         }
     }
 }

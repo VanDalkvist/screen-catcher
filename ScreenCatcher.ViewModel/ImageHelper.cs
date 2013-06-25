@@ -2,6 +2,7 @@
 using SystemImageFormat = System.Drawing.Imaging.ImageFormat;
 
 using ScreenCatcher.Common;
+using ScreenCatcher.Model;
 
 namespace ScreenCatcher.ViewModel
 {
@@ -34,6 +35,8 @@ namespace ScreenCatcher.ViewModel
             object addon = DateTime.Now.Ticks;
             if (settings.UseDate)
                 addon = DateTime.Now.ToString("dd_MM_yyyy_(HH-mm-ss-fff)");
+            if (settings.UseGuid)
+                addon = Guid.NewGuid();
             return path + settings.DefaultFileName + Constants.NameSeparator + addon + Constants.Dot + settings.Extension.ToString().ToLower();
         }
     }

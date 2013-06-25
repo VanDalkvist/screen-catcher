@@ -115,10 +115,10 @@ namespace ScreenCatcher.ViewModel
 
         private void OpenForEdit(ScreenSettings settings, string fileName)
         {
-            if (settings.CurrentProgramm == Programm.Paint)
-            {
+            //if (settings.CurrentProgramm == Programm.Paint)
+            //{
                 Process.Start(DefaultSettings.Paint, fileName);
-            }
+            //}
         }
 
         private void CatchScreenWithConfirmation(object arg)

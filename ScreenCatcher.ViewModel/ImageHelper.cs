@@ -39,10 +39,10 @@ namespace ScreenCatcher.ViewModel
                 switch (settings.CurrentSuffix)
                 {
                     case Suffix.Date:
-                        addon = DateTime.Now.ToString("dd_MM_yyyy_(HH-mm-ss-fff)");
+                        addon += DateTime.Now.ToString("dd_MM_yyyy_(HH-mm-ss-fff)");
                         break;
                     case Suffix.Guid:
-                        addon = Guid.NewGuid().ToString();
+                        addon += Guid.NewGuid().ToString();
                         break;
                 }
             }

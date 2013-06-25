@@ -76,11 +76,10 @@
                     </Grid>
                     <Grid Grid.Row="2">
                         <CheckBox x:Name="RunAsCheck"
-                                  Width="170"
                                   IsChecked="{Binding Path=RunAs, Mode=TwoWay}"
-                                  Content="Редактировать?"
+                                  Content="Редактировать с помощью Paint"
                                   HorizontalAlignment="Left" />
-                        <StackPanel
+                        <!--<StackPanel
                             Orientation="Horizontal"
                             HorizontalAlignment="Right">
                             <RadioButton
@@ -100,7 +99,7 @@
                                     </Style.Triggers>
                                 </Style>
                             </StackPanel.Style>
-                        </StackPanel>
+                        </StackPanel>-->
                     </Grid>
                 </Grid>
             </GroupBox>

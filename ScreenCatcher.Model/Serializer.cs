@@ -1,4 +1,6 @@
+using System;
 using System.IO;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 using ScreenCatcher.Common;
@@ -29,7 +31,15 @@ namespace ScreenCatcher.Model
 
             using (var reader = new StreamReader(fileName))
             {
-                deserialized = serializer.Deserialize(reader);
+                try
+                {
+                    deserialized = serializer.Deserialize(reader);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Error during configuration loading. Default settings will be applied.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return null;
+                }
             }
 
             return deserialized;

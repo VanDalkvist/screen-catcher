@@ -5,19 +5,6 @@ namespace ScreenCatcher.ViewModel
 {
     public static class StandardCommands
     {
-        public static readonly DependencyProperty CloseCommandProperty =
-           DependencyProperty.RegisterAttached("CloseCommand", typeof(ICommand), typeof(StandardCommands));
-
-        public static ICommand GetCloseCommand(Window source)
-        {
-            return (ICommand)source.GetValue(CloseCommandProperty);
-        }
-
-        public static void SetCloseCommand(Window source, ICommand value)
-        {
-            source.SetValue(CloseCommandProperty, value);
-        }
-
         public static readonly DependencyProperty LoadCommandProperty =
            DependencyProperty.RegisterAttached("LoadCommand", typeof(ICommand), typeof(StandardCommands), new PropertyMetadata(LoadCommandChanged));
 
@@ -25,7 +12,7 @@ namespace ScreenCatcher.ViewModel
         {
             var window = d as Window;
             if (window != null)
-                window.SourceInitialized += (sender, args) => ExecuteCommand(sender, e);
+                window.Loaded += (sender, args) => ExecuteCommand(sender, e);
         }
 
         private static void ExecuteCommand(object sender, DependencyPropertyChangedEventArgs e)
@@ -61,6 +48,26 @@ namespace ScreenCatcher.ViewModel
         }
 
         public static void SetUnloadCommand(Window source, ICommand value)
+        {
+            source.SetValue(UnloadCommandProperty, value);
+        }
+
+        public static readonly DependencyProperty MinimizeCommandProperty =
+           DependencyProperty.RegisterAttached("MinimizeCommand", typeof(ICommand), typeof(StandardCommands), new PropertyMetadata(MinimizeCommandChanged));
+
+        private static void MinimizeCommandChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var window = d as Window;
+            if (window != null)
+                window.StateChanged += (sender, args) => ExecuteCommand(sender, e);
+        }
+
+        public static ICommand GetMinimizeCommand(Window source)
+        {
+            return (ICommand)source.GetValue(UnloadCommandProperty);
+        }
+
+        public static void SetMinimizeCommand(Window source, ICommand value)
         {
             source.SetValue(UnloadCommandProperty, value);
         }

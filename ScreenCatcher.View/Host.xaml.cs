@@ -1,5 +1,5 @@
+using System;
 using System.Windows;
-
 using ScreenCatcher.ViewModel;
 
 namespace ScreenCatcher.View
@@ -12,7 +12,7 @@ namespace ScreenCatcher.View
             DataContext = new ScreenCatcherViewModel();
         }
 
-        private void SettingsOnClick(object sender, RoutedEventArgs e)
+        private void OpenSettings(object sender, EventArgs args)
         {
             var viewModel = DataContext as ScreenCatcherViewModel;
             if (viewModel == null)
@@ -24,6 +24,11 @@ namespace ScreenCatcher.View
                 DataContext = new SettingsViewModel(settings)
             };
             window.ShowDialog();
+        }
+
+        private void Close(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

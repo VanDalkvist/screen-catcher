@@ -9,6 +9,7 @@ using Size = System.Drawing.Size;
 
 using ScreenCatcher.Logic;
 using ScreenCatcher.Model;
+using ImageFormat = ScreenCatcher.Model.ImageFormat;
 using ModifierKeys = ScreenCatcher.Model.ModifierKeys;
 
 namespace ScreenCatcher.ViewModel
@@ -17,31 +18,46 @@ namespace ScreenCatcher.ViewModel
     {
         private HotkeyRegistrator _hotKeyRegistrator;
 
-        private ICommand _registerCommand;
-        public ICommand RegisterCommand
+        private ICommand _loadCommand;
+        public ICommand LoadCommand
         {
-            get { return _registerCommand ?? (_registerCommand = new RelayCommand(Register)); }
+            get { return _loadCommand ?? (_loadCommand = new RelayCommand(Load)); }
         }
 
-        private void Register(object arg)
+        private void Load(object arg)
         {
-            if (!(arg is Window))
+            var window = arg as Window;
+            if (window == null)
                 return;
-
+            
             if (_hotKeyRegistrator == null)
-                _hotKeyRegistrator = new HotkeyRegistrator(arg as Window);
+                _hotKeyRegistrator = new HotkeyRegistrator(window);
             else
                 Unregister(arg);
 
+            Register();
+
+            SetOptions(window);
+        }
+
+        private void Register()
+        {
             var settings = GetScreenSettings();
             if (settings.ScreenCatch.Key != Keys.None)
                 RegisterKey(CatchScreen, settings.ScreenCatch.Key, settings.ScreenCatch.ModifierKey);
 
             if (settings.ScreenCatchCurrentWindow.Key != Keys.None)
-                RegisterKey(CatchCurrentWindow, settings.ScreenCatchCurrentWindow.Key, settings.ScreenCatchCurrentWindow.ModifierKey);
+                RegisterKey(CatchCurrentWindow, settings.ScreenCatchCurrentWindow.Key,
+                            settings.ScreenCatchCurrentWindow.ModifierKey);
 
             if (settings.ScreenCatchWithConfirmation.Key != Keys.None)
-                RegisterKey(CatchScreenWithConfirmation, settings.ScreenCatchWithConfirmation.Key, settings.ScreenCatchWithConfirmation.ModifierKey);
+                RegisterKey(CatchScreenWithConfirmation, settings.ScreenCatchWithConfirmation.Key,
+                            settings.ScreenCatchWithConfirmation.ModifierKey);
+        }
+
+        private void SetOptions(Window window)
+        {
+            window.Hide();
         }
 
         private void RegisterKey(Action<object> catchScreenFunc, Keys key, ModifierKeys modifierKey)
@@ -134,7 +150,7 @@ namespace ScreenCatcher.ViewModel
                 var saveImageDialog = new SaveFileDialog
                 {
                     Title = @"Select output file:",
-                    Filter = @"JPeg Image|*.jpeg|Bitmap Image|*.bmp|Gif Image|*.gif|Icon Image|*.icon|PNG Image|*.png",
+                    Filter = @"JPeg Image|*.jpeg|Bitmap Image|*.bmp|Gif Image|*.gif|PNG Image|*.png",
                     FileName = settings.DefaultFileName,
                 };
                 if (saveImageDialog.ShowDialog() == DialogResult.OK)
@@ -151,7 +167,7 @@ namespace ScreenCatcher.ViewModel
         private void CatchCurrentWindow(object arg)
         {
             var settings = GetScreenSettings();
-            var bounds = WinAPI.GetActiveWindowBounds();
+            var bounds = HotkeyRegistrator.GetActiveWindowBounds();
             const int shift = 0;
 
             string fileName;
@@ -171,20 +187,16 @@ namespace ScreenCatcher.ViewModel
                 OpenForEdit(settings, fileName);
         }
 
-        //private ICommand _openSettingsCommand;
-        //public ICommand OpenSettingsCommand
-        //{
-        //    get { return _openSettingsCommand ?? (_openSettingsCommand = new RelayCommand(OpenSettings)); }
-        //}
+        protected override void Minimize(object obj)
+        {
+            if (obj == null)
+                throw new ArgumentNullException("obj");
 
-        //private void OpenSettings(object obj)
-        //{
-        //    var settings = GetScreenSettings();
-        //    var window = new Settings
-        //    {
-        //        DataContext = new SettingsViewModel(settings)
-        //    };
-        //    window.ShowDialog();
-        //}
+            var window = obj as Window;
+            if (window == null)
+                throw new ArgumentException();
+
+            window.Hide();
+        }
     }
 }

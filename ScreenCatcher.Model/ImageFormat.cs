@@ -1,11 +1,10 @@
-namespace ScreenCatcher.ViewModel
+namespace ScreenCatcher.Model
 {
     public enum ImageFormat
     {
         Bmp,
         Gif,
         Jpeg,
-        Png,
-        Icon
+        Png
     }
 }

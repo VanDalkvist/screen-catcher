@@ -3,18 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewModel="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel"
+        xmlns:vm="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel"
+        xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
         mc:Ignorable="d"
         Title="Screen Catcher"
         Height="350"
-        Width="525" 
-        viewModel:StandardCommands.LoadCommand="{Binding RegisterCommand}"
-        viewModel:StandardCommands.UnloadCommand="{Binding UnregisterCommand}"
+        Width="525"
+        vm:StandardCommands.LoadCommand="{Binding LoadCommand}"
+        vm:StandardCommands.UnloadCommand="{Binding UnregisterCommand}"
         Style="{StaticResource ChromeWindowStyle}">
     <Grid>
-        <Button x:Name="Settings"
-                Content="Настройки"
-                Width="75"
-                Click="SettingsOnClick"/>
+        <tb:TaskbarIcon
+            IconSource="Icons/Main.ico"
+            ToolTipText="{Binding Title,RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}">
+            <tb:TaskbarIcon.TrayToolTip>
+                <Border
+                    Background="{StaticResource NormalBrush}"
+                    BorderBrush="{StaticResource ActiveBrush}"
+                    BorderThickness="2"
+                    Width="150"
+                    Height="30">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Border}}, Path=(tb:TaskbarIcon.ParentTaskbarIcon).ToolTipText}"/>
+                </Border>
+            </tb:TaskbarIcon.TrayToolTip>
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Header="Настройки"
+                        Click="OpenSettings"/>
+                    <MenuItem
+                        Header="Выход"
+                        Click="Close"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
     </Grid>
 </Window>

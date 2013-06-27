@@ -75,7 +75,7 @@
                                     Background="{StaticResource WhiteBrush}"
                                     BorderBrush="{StaticResource ActiveBrush}">
 
-                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch" >
+                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch">
                                     <Border x:Name="TitleBar"
                                             DockPanel.Dock="Top"
                                             Background="{StaticResource NormalBrush}"

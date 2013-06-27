@@ -1,7 +1,5 @@
 using System;
 
-using ScreenCatcher.ViewModel;
-
 namespace ScreenCatcher.Model
 {
     [Serializable]

@@ -16,8 +16,6 @@ namespace ScreenCatcher.ViewModel
                     return SystemImageFormat.Bmp;
                 case ImageFormat.Gif:
                     return SystemImageFormat.Gif;
-                case ImageFormat.Icon:
-                    return SystemImageFormat.Icon;
                 case ImageFormat.Jpeg:
                     return SystemImageFormat.Jpeg;
                 case ImageFormat.Png:

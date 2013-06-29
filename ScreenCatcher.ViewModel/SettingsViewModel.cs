@@ -29,6 +29,8 @@ namespace ScreenCatcher.ViewModel
         private bool _useSuffix;
         private Suffix _currentSuffix;
 
+        private bool _useNotification;
+
         public SettingsViewModel(ScreenSettings settings)
         {
             Initialize(settings);
@@ -49,6 +51,7 @@ namespace ScreenCatcher.ViewModel
             ScreenCatchCurrentWindowKey = settings.ScreenCatchCurrentWindow.Key;
             ScreenCatchCurrentWindowModifierKey = settings.ScreenCatchCurrentWindow.ModifierKey;
             RunAs = settings.RunAs;
+            UseNotification = settings.UseNotification;
 
             _currentProgramm = settings.CurrentProgramm;
             _currentSuffix = settings.CurrentSuffix;
@@ -275,6 +278,19 @@ namespace ScreenCatcher.ViewModel
             }
         }
 
+        public bool UseNotification
+        {
+            get { return _useNotification; }
+            set
+            {
+                if (_useNotification == value)
+                    return;
+
+                _useNotification = value;
+                OnPropertyChanged("UseNotification");
+            }
+        }
+
         public IEnumerable<ImageFormat> Extensions
         {
             get { return Enum.GetValues(typeof(ImageFormat)).Cast<ImageFormat>(); }
@@ -322,7 +338,8 @@ namespace ScreenCatcher.ViewModel
                 RunAs = _runAs,
                 CurrentProgramm = _currentProgramm,
                 UseSuffix = UseSuffix,
-                CurrentSuffix = _currentSuffix
+                CurrentSuffix = _currentSuffix,
+                UseNotification = _useNotification
             };
             settings.Save();
 

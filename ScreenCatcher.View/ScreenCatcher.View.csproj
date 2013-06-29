@@ -57,8 +57,17 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Catcher.xaml.cs">
+      <DependentUpon>Catcher.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ClickedImage.xaml.cs">
+      <DependentUpon>ClickedImage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Host.xaml.cs">
       <DependentUpon>Host.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notification.xaml.cs">
+      <DependentUpon>Notification.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -91,9 +100,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\Catcher.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ClickedImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Host.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Notification.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Settings.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -107,16 +128,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Styles\SettingsStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Styles\WindowChrome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScreenCatcher.Common\ScreenCatcher.Common.csproj">
+      <Project>{61CAACDB-333D-4704-AB76-4F5B269FC344}</Project>
+      <Name>ScreenCatcher.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScreenCatcher.Model\ScreenCatcher.Model.csproj">
       <Project>{A7D1E5B9-3448-4F53-ACC7-C9FAD8833849}</Project>
       <Name>ScreenCatcher.Model</Name>
@@ -127,7 +148,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Main.ico" />
+    <Resource Include="Resources\Main.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Paint.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -6,9 +6,9 @@ using ScreenCatcher.Model;
 
 namespace ScreenCatcher.ViewModel
 {
-    public static class ImageHelper
+    internal static class ImageHelper
     {
-        public static SystemImageFormat Parse(this ImageFormat format)
+        internal static SystemImageFormat Parse(this ImageFormat format)
         {
             switch (format)
             {
@@ -25,7 +25,7 @@ namespace ScreenCatcher.ViewModel
             }
         }
 
-        public static string CreateFileName(this ScreenSettings settings)
+        internal static string CreateFileName(this ScreenSettings settings)
         {
             var path = String.Empty;
             if (settings.UseStorePath && !String.IsNullOrEmpty(settings.DefaultPath))

@@ -6,7 +6,7 @@ namespace ScreenCatcher.ViewModel
 {
     internal class PathParser
     {
-        public static System.Drawing.Imaging.ImageFormat GetExtension(string fullName)
+        internal static System.Drawing.Imaging.ImageFormat GetExtension(string fullName)
         {
             var paths = fullName.Split('.');
             var extension = paths.Last();

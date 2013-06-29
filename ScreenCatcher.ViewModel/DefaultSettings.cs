@@ -1,9 +1,9 @@
 ﻿namespace ScreenCatcher.ViewModel
 {
-    public class DefaultSettings
+    internal class DefaultSettings
     {
-        public const string FileName = "Screen";
-
-        public const string Paint = "mspaint.exe";
+        internal const string FileName = "Screen";
+        internal const string Paint = "mspaint.exe";
+        internal const string Explorer = "explorer.exe";
     }
 }

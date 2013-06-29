@@ -1,0 +1,41 @@
+﻿<Window x:Class="ScreenCatcher.View.Notification"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:ScreenCatcher.View.Controls"
+        Title="Screenshot"
+        Height="150"
+        Width="270"
+        Style="{StaticResource NotificationWindowStyle}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Image x:Name="Screen"
+               Grid.Column="0"
+               Margin="5"
+               ToolTip="{Binding FileName, Mode=OneWay}"
+               Source="{Binding FullFileName, Mode=OneWay}"/>
+        <StackPanel
+            Orientation="Vertical"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Center"
+            Grid.Column="2">
+            <controls:ClickedImage
+                Width="20"
+                Height="20"
+                Margin="5"
+                ClickCommand="{Binding OpenCommand}"
+                ImageSource="/Resources/Paint.png"
+                ToolTip="Открыть с помошью Paint">
+            </controls:ClickedImage>
+            <controls:ClickedImage
+                Width="20"
+                Height="20"
+                Margin="5"
+                ImageSource="/Resources/Folder.png"
+                ClickCommand="{Binding OpenDirectoryCommand}"
+                ToolTip="Показать в проводнике"/>
+        </StackPanel>
+    </Grid>
+</Window>

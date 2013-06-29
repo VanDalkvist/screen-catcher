@@ -5,16 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel"
         xmlns:tb="clr-namespace:Hardcodet.Wpf.TaskbarNotification;assembly=Hardcodet.Wpf.TaskbarNotification"
+        xmlns:controls="clr-namespace:ScreenCatcher.View.Controls"
         mc:Ignorable="d"
         Title="Screen Catcher"
         Height="350"
         Width="525"
-        vm:StandardCommands.LoadCommand="{Binding LoadCommand}"
-        vm:StandardCommands.UnloadCommand="{Binding UnregisterCommand}"
-        Style="{StaticResource ChromeWindowStyle}">
+        Style="{StaticResource ChromeWindowStyle}"
+        d:DataContext="{d:DesignInstance vm:ScreenCatcherViewModel}"
+        vm:StandardCommands.LoadCommand="{Binding Path=LoadCommand}"
+        vm:StandardCommands.UnloadCommand="{Binding Path=UnregisterCommand}">
     <Grid>
+        <controls:Catcher x:Name="MainCatcher"
+                          HadCaught="{Binding Path=(vm:WindowProperties.HadCaughtNotificationFileName), 
+                            RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"/>
         <tb:TaskbarIcon
-            IconSource="Icons/Main.ico"
+            IconSource="Resources/Main.ico"
             ToolTipText="{Binding Title,RelativeSource={RelativeSource FindAncestor,AncestorType=Window}}">
             <tb:TaskbarIcon.TrayToolTip>
                 <Border
@@ -26,7 +31,8 @@
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Border}}, Path=(tb:TaskbarIcon.ParentTaskbarIcon).ToolTipText}"/>
+                        Text="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType={x:Type Border}},
+                            Path=(tb:TaskbarIcon.ParentTaskbarIcon).ToolTipText}"/>
                 </Border>
             </tb:TaskbarIcon.TrayToolTip>
             <tb:TaskbarIcon.ContextMenu>

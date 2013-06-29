@@ -62,7 +62,7 @@ namespace ScreenCatcher.ViewModel
 
         private static void CanDragMoveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (!((bool) e.NewValue))
+            if (!((bool)e.NewValue))
                 return;
 
             var uiElement = d as UIElement;
@@ -81,6 +81,19 @@ namespace ScreenCatcher.ViewModel
                 return;
 
             window.DragMove();
+        }
+
+        public static readonly DependencyProperty HadCaughtNotificationFileNameProperty =
+            DependencyProperty.RegisterAttached("HadCaughtNotificationFileName", typeof(string), typeof(WindowProperties));
+
+        public static void SetHadCaughtNotificationFileName(Window target, string value)
+        {
+            target.SetValue(HadCaughtNotificationFileNameProperty, value);
+        }
+
+        public static string GetHadCaughtNotificationFileName(Window target)
+        {
+            return (string)target.GetValue(HadCaughtNotificationFileNameProperty);
         }
     }
 }

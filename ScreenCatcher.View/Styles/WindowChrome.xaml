@@ -3,7 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:shell="clr-namespace:Microsoft.Windows.Shell;assembly=Microsoft.Windows.Shell"
-    xmlns:viewModel="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel">
+    xmlns:vm="clr-namespace:ScreenCatcher.ViewModel;assembly=ScreenCatcher.ViewModel">
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="Common.xaml"/>
@@ -41,6 +41,156 @@
         </Setter>
     </Style>
 
+    <ControlTemplate x:Key="SimpleWindowTemplate" TargetType="{x:Type Window}">
+        <!--
+                    7 is a magic number. By default Windows fits a maximized window with Margin
+                    7 7 7 5 to fill entire screen (WPF .Net 4.5). Larger numbers produce a gap
+                    between maximized window and screen edges; smaller numbers show parts of
+                    the window outside of the current monitor on multi-display computers.
+                    -->
+        <Border x:Name="PART_Container">
+            <Grid
+                TextOptions.TextRenderingMode="ClearType"
+                TextOptions.TextFormattingMode="Display" >
+
+                <Border x:Name="PART_Border"
+                        Width="Auto"
+                        Height="Auto"
+                        BorderThickness="1"
+                        Background="{StaticResource WhiteBrush}"
+                        BorderBrush="{StaticResource ActiveBrush}">
+
+                    <DockPanel HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch">
+                        <Border x:Name="TitleBar"
+                                DockPanel.Dock="Top"
+                                Background="{StaticResource NormalBrush}"
+                                BorderBrush="{StaticResource NormalBrush}"
+                                BorderThickness="0 0 0 1" >
+                            <Border.InputBindings>
+                                <MouseBinding
+                                    MouseAction="LeftDoubleClick"
+                                    Command="{Binding Path=DataContext.MaximizeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
+                            </Border.InputBindings>
+                            <Grid Height="35">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="Caption"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="15 0 0 0"
+                                           FontFamily="Segoe UI"
+                                           FontSize="12"
+                                           Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="{StaticResource ForegroundBrush}"/>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    Height="26"
+                                    Grid.Column="1">
+                                    <Button x:Name="MinButton"
+                                            Width="34"
+                                            Style="{StaticResource ChromeButtonStyle}"
+                                            Command="{Binding Path=DataContext.MinimizeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            Visibility="{Binding Path=(vm:WindowProperties.MinimizeVisibility), RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid MaxHeight="9" MaxWidth="9">
+                                            <Path
+                                                Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                StrokeThickness="1"
+                                                Stretch="None"
+                                                RenderOptions.EdgeMode="Aliased"
+                                                Data="M0,8 H8 M0,7 H8 M0,6 H8" />
+                                        </Grid>
+                                    </Button>
+                                    <Button x:Name="MaxButton"
+                                            Width="34"
+                                            Style="{StaticResource ChromeButtonStyle}"
+                                            Command="{Binding Path=DataContext.MaximizeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            Visibility="{Binding Path=(vm:WindowProperties.MaximizeVisibility), RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid MaxHeight="9" MaxWidth="9">
+                                            <Path x:Name="PART_MaxButton_Path"
+                                                  Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
+                                                  StrokeThickness="1"
+                                                  Stretch="None"
+                                                  RenderOptions.EdgeMode="Aliased"
+                                                  Data="M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8" />
+                                        </Grid>
+                                    </Button>
+                                    <Button x:Name="CloseButton"
+                                            Width="34"
+                                            Style="{StaticResource ChromeButtonStyle}"
+                                            Command="{Binding Path=DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid MaxHeight="9" MaxWidth="9">
+                                            <Path
+                                                Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                StrokeThickness="1.5"
+                                                Stretch="None"
+                                                Data="M0,0 L8,8 M0,8 L8,0" />
+                                        </Grid>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter />
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property ="WindowState" Value="Maximized">
+                <Setter
+                    TargetName="PART_MaxButton_Path"
+                    Property="Data"
+                    Value="M0,3 H5 V8 H0 V3 M0,4 H5 M3,0 H8 V5 H7 M3,1 H8" />
+            </Trigger>
+            <!--<Trigger Property="WindowState" Value="Normal">
+                            <Setter TargetName="PART_Border" Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect
+                                        Color="black"
+                                        Opacity="1"
+                                        BlurRadius="10"
+                                        ShadowDepth="3"
+                                        Direction="315" />
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>-->
+            <Trigger Property="IsActive" Value="False">
+                <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+                <Setter TargetName="TitleBar" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+                <Setter TargetName="TitleBar" Property="Background" Value="{StaticResource DisabledBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style TargetType="{x:Type StatusBar}">
+        <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource NormalBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalBrush}" />
+        <Setter Property="BorderThickness" Value="0 1 0 0" />
+        <Style.Resources>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="BorderThickness" Value="0" />
+            </Style>
+        </Style.Resources>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
+                <Setter Property="Background" Value="{StaticResource DisabledBrush}" />
+                <Setter Property="BorderBrush" Value="{StaticResource DisabledBrush}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style x:Key="ChromeWindowStyle" TargetType="{x:Type Window}">
         <Setter Property="WindowStyle" Value="None" />
         <Setter Property="AllowsTransparency" Value="True" />
@@ -54,160 +204,90 @@
                 <shell:WindowChrome GlassFrameThickness="1" ResizeBorderThickness="7" CaptionHeight="35" />
             </Setter.Value>
         </Setter>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type Window}">
-                    <!--
-                    7 is a magic number. By default Windows fits a maximized window with Margin
-                    7 7 7 5 to fill entire screen (WPF .Net 4.5). Larger numbers produce a gap
-                    between maximized window and screen edges; smaller numbers show parts of
-                    the window outside of the current monitor on multi-display computers.
-                    -->
-                    <Border x:Name="PART_Container">
-                        <Grid
-                            TextOptions.TextRenderingMode="ClearType"
-                            TextOptions.TextFormattingMode="Display" >
+        <Setter Property="Template" Value="{StaticResource SimpleWindowTemplate}"/>
+    </Style>
 
-                            <Border x:Name="PART_Border"
-                                    Width="Auto"
-                                    Height="Auto"
-                                    BorderThickness="1"
-                                    Background="{StaticResource WhiteBrush}"
-                                    BorderBrush="{StaticResource ActiveBrush}">
+    <ControlTemplate x:Key="NotificationWindowTemplate" TargetType="{x:Type Window}">
+        <Border x:Name="PART_Container">
+            <Grid
+                TextOptions.TextRenderingMode="ClearType"
+                TextOptions.TextFormattingMode="Display" >
 
-                                <DockPanel HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch">
-                                    <Border x:Name="TitleBar"
-                                            DockPanel.Dock="Top"
-                                            Background="{StaticResource NormalBrush}"
-                                            BorderBrush="{StaticResource NormalBrush}"
-                                            BorderThickness="0 0 0 1" >
-                                        <Border.InputBindings>
-                                            <MouseBinding
-                                                MouseAction="LeftDoubleClick"
-                                                Command="{Binding Path=DataContext.MaximizeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"/>
-                                        </Border.InputBindings>
-                                        <Grid Height="35">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock x:Name="Caption"
-                                                       Grid.Column="0"
-                                                       HorizontalAlignment="Left"
-                                                       VerticalAlignment="Center"
-                                                       Margin="15 0 0 0"
-                                                       FontFamily="Segoe UI"
-                                                       FontSize="12"
-                                                       Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                       Foreground="{StaticResource ForegroundBrush}"/>
-                                            <StackPanel
-                                                Orientation="Horizontal"
-                                                VerticalAlignment="Top"
-                                                HorizontalAlignment="Right"
-                                                Height="26"
-                                                Grid.Column="1">
-                                                <Button x:Name="MinButton"
-                                                        Width="34"
-                                                        Style="{StaticResource ChromeButtonStyle}"
-                                                        Command="{Binding Path=DataContext.MinimizeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        Visibility="{Binding Path=(viewModel:WindowProperties.MinimizeVisibility), RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                        shell:WindowChrome.IsHitTestVisibleInChrome="True">
-                                                    <Grid MaxHeight="9" MaxWidth="9">
-                                                        <Path
-                                                            Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                                                            StrokeThickness="1"
-                                                            Stretch="None"
-                                                            RenderOptions.EdgeMode="Aliased"
-                                                            Data="M0,8 H8 M0,7 H8 M0,6 H8" />
-                                                    </Grid>
-                                                </Button>
-                                                <Button x:Name="MaxButton"
-                                                        Width="34"
-                                                        Style="{StaticResource ChromeButtonStyle}"
-                                                        Command="{Binding Path=DataContext.MaximizeCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                        Visibility="{Binding Path=(viewModel:WindowProperties.MaximizeVisibility), RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                        shell:WindowChrome.IsHitTestVisibleInChrome="True">
-                                                    <Grid MaxHeight="9" MaxWidth="9">
-                                                        <Path x:Name="PART_MaxButton_Path"
-                                                              Stroke="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=Foreground}"
-                                                              StrokeThickness="1"
-                                                              Stretch="None"
-                                                              RenderOptions.EdgeMode="Aliased"
-                                                              Data="M0,0 H8 V8 H0 V0 M0,1 H8 M0,2 H8" />
-                                                    </Grid>
-                                                </Button>
-                                                <Button x:Name="CloseButton"
-                                                        Width="34"
-                                                        Style="{StaticResource ChromeButtonStyle}"
-                                                        Command="{Binding Path=DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                                        shell:WindowChrome.IsHitTestVisibleInChrome="True">
-                                                    <Grid MaxHeight="9" MaxWidth="9">
-                                                        <Path
-                                                            Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
-                                                            StrokeThickness="1.5"
-                                                            Stretch="None"
-                                                            Data="M0,0 L8,8 M0,8 L8,0" />
-                                                    </Grid>
-                                                </Button>
-                                            </StackPanel>
+                <Border x:Name="PART_Border"
+                        Width="Auto"
+                        Height="Auto"
+                        BorderThickness="1"
+                        Background="{StaticResource WhiteBrush}"
+                        BorderBrush="{StaticResource ActiveBrush}"
+                        Opacity="10">
+
+                    <DockPanel HorizontalAlignment="Stretch" Background="Transparent" VerticalAlignment="Stretch">
+                        <Border x:Name="TitleBar"
+                                DockPanel.Dock="Top"
+                                Background="{StaticResource NormalBrush}"
+                                BorderBrush="{StaticResource NormalBrush}"
+                                BorderThickness="0 0 0 1" >
+                            <Grid Height="20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock x:Name="Caption"
+                                           Grid.Column="0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           Margin="15 0 0 0"
+                                           FontFamily="Segoe UI"
+                                           FontSize="12"
+                                           Text="{Binding Path=Title, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                           Foreground="{StaticResource ForegroundBrush}"/>
+                                <StackPanel
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    Height="17"
+                                    Grid.Column="1">
+                                    <Button x:Name="CloseButton"
+                                            Width="17"
+                                            Style="{StaticResource ChromeButtonStyle}"
+                                            Command="{Binding Path=DataContext.CloseCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                            shell:WindowChrome.IsHitTestVisibleInChrome="True">
+                                        <Grid MaxHeight="7" MaxWidth="7">
+                                            <Path
+                                                Stroke="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}"
+                                                StrokeThickness="1.5"
+                                                Stretch="None"
+                                                Data="M0,0 L6,6 M0,6 L6,0" />
                                         </Grid>
-                                    </Border>
-                                    <ContentPresenter />
-                                </DockPanel>
-                            </Border>
-                        </Grid>
-                    </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property ="WindowState" Value="Maximized">
-                            <Setter
-                                TargetName="PART_MaxButton_Path"
-                                Property="Data"
-                                Value="M0,3 H5 V8 H0 V3 M0,4 H5 M3,0 H8 V5 H7 M3,1 H8" />
-                        </Trigger>
-                        <!--<Trigger Property="WindowState" Value="Normal">
-                            <Setter TargetName="PART_Border" Property="Effect">
-                                <Setter.Value>
-                                    <DropShadowEffect
-                                        Color="black"
-                                        Opacity="1"
-                                        BlurRadius="10"
-                                        ShadowDepth="3"
-                                        Direction="315" />
-                                </Setter.Value>
-                            </Setter>
-                        </Trigger>-->
-                        <Trigger Property="IsActive" Value="False">
-                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
-                            <Setter TargetName="TitleBar" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
-                            <Setter TargetName="TitleBar" Property="Background" Value="{StaticResource DisabledBrush}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter />
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsActive" Value="False">
+                <Setter TargetName="PART_Border" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+                <Setter TargetName="TitleBar" Property="BorderBrush" Value="{StaticResource DisabledBrush}"/>
+                <Setter TargetName="TitleBar" Property="Background" Value="{StaticResource DisabledBrush}"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style x:Key="NotificationWindowStyle" BasedOn="{StaticResource ChromeWindowStyle}" TargetType="{x:Type Window}">
+        <Setter Property="ResizeMode" Value="NoResize" />
+        <Setter Property="MinWidth" Value="170" />
+        <Setter Property="MinHeight" Value="100" />
+        <Setter Property="shell:WindowChrome.WindowChrome">
+            <Setter.Value>
+                <shell:WindowChrome GlassFrameThickness="1" ResizeBorderThickness="7" CaptionHeight="20" />
             </Setter.Value>
         </Setter>
-        <Style.Resources>
-            <Style TargetType="{x:Type StatusBar}">
-                <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
-                <Setter Property="Background" Value="{StaticResource NormalBrush}" />
-                <Setter Property="BorderBrush" Value="{StaticResource NormalBrush}" />
-                <Setter Property="BorderThickness" Value="0 1 0 0" />
-                <Style.Resources>
-                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-                        <Setter Property="BorderThickness" Value="0" />
-                    </Style>
-                </Style.Resources>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding IsActive, RelativeSource={RelativeSource AncestorType=Window}}" Value="False">
-                        <Setter Property="Background" Value="{StaticResource DisabledBrush}" />
-                        <Setter Property="BorderBrush" Value="{StaticResource DisabledBrush}" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Style.Resources>
+        <Setter Property="Template" Value="{StaticResource NotificationWindowTemplate}"/>
     </Style>
 
 </ResourceDictionary>

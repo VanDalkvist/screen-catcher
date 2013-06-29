@@ -34,6 +34,8 @@ namespace ScreenCatcher.Model
         
         public Programm CurrentProgramm { get; set; }
 
+        public bool UseNotification { get; set; }
+
         public override object Clone()
         {
             return new ScreenSettings
@@ -42,12 +44,14 @@ namespace ScreenCatcher.Model
                 Extension = Extension,
                 DefaultPath = DefaultPath,
                 UseStorePath = UseStorePath,
+                UseSuffix = UseSuffix,
                 CurrentSuffix = CurrentSuffix,
                 ScreenCatch = ScreenCatch,
                 ScreenCatchWithConfirmation = ScreenCatchWithConfirmation,
                 ScreenCatchCurrentWindow = ScreenCatchCurrentWindow,
                 RunAs = RunAs,
-                CurrentProgramm = CurrentProgramm
+                CurrentProgramm = CurrentProgramm,
+                UseNotification = UseNotification
             };
         }
     }

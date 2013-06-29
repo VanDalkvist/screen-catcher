@@ -135,11 +135,9 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource MouseOverBrush}" />
-                            <Setter TargetName="MainBorder" Property="Opacity" Value="1" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="MainBorder" Property="BorderBrush" Value="{StaticResource ActiveBrush}" />
-                            <Setter TargetName="MainBorder" Property="Opacity" Value="1" />
                             <Setter TargetName="MainBorder" Property="Background" Value="{StaticResource ActiveBrush}" />
                             <Setter Property="Foreground" Value="{StaticResource WhiteBrush}" />
                         </Trigger>

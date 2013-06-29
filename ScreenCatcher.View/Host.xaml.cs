@@ -1,5 +1,8 @@
 using System;
 using System.Windows;
+
+using Microsoft.Windows.Shell;
+
 using ScreenCatcher.ViewModel;
 
 namespace ScreenCatcher.View
@@ -28,7 +31,18 @@ namespace ScreenCatcher.View
 
         private void Close(object sender, RoutedEventArgs e)
         {
-            Close();
+            SystemCommands.CloseWindow(this);
+        }
+
+        public bool HadCaught
+        {
+            set
+            {
+                if (!value)
+                    return;
+
+                new Notification().Show();
+            }
         }
     }
 }

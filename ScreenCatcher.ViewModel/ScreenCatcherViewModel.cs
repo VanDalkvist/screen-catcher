@@ -17,6 +17,7 @@ namespace ScreenCatcher.ViewModel
     public class ScreenCatcherViewModel : ViewModelBase
     {
         private HotkeyRegistrator _hotKeyRegistrator;
+        private Window _registeredWindow;
 
         private ICommand _loadCommand;
         public ICommand LoadCommand
@@ -29,7 +30,9 @@ namespace ScreenCatcher.ViewModel
             var window = arg as Window;
             if (window == null)
                 return;
-            
+
+            _registeredWindow = window;
+
             if (_hotKeyRegistrator == null)
                 _hotKeyRegistrator = new HotkeyRegistrator(window);
             else
@@ -62,7 +65,7 @@ namespace ScreenCatcher.ViewModel
 
         private void RegisterKey(Action<object> catchScreenFunc, Keys key, ModifierKeys modifierKey)
         {
-            _hotKeyRegistrator.RegisterGlobalHotkey(catchScreenFunc, key, (System.Windows.Input.ModifierKeys) modifierKey);
+            _hotKeyRegistrator.RegisterGlobalHotkey(catchScreenFunc, key, (System.Windows.Input.ModifierKeys)modifierKey);
         }
 
         private ICommand _unregisterCommand;
@@ -106,6 +109,7 @@ namespace ScreenCatcher.ViewModel
                     ModifierKey = ModifierKeys.Alt
                 },
                 CurrentProgramm = Programm.Paint,
+                UseNotification = true,
                 RunAs = false
             };
             settings.Save();
@@ -127,13 +131,21 @@ namespace ScreenCatcher.ViewModel
             }
             if (settings.RunAs)
                 OpenForEdit(settings, fileName);
+
+            if (settings.UseNotification)
+                Notify(fileName);
+        }
+
+        private void Notify(string fileName)
+        {
+            WindowProperties.SetHadCaughtNotificationFileName(_registeredWindow, fileName);
         }
 
         private void OpenForEdit(ScreenSettings settings, string fileName)
         {
             //if (settings.CurrentProgramm == Programm.Paint)
             //{
-                Process.Start(DefaultSettings.Paint, fileName);
+            Process.Start(DefaultSettings.Paint, fileName);
             //}
         }
 
@@ -185,6 +197,9 @@ namespace ScreenCatcher.ViewModel
             }
             if (settings.RunAs)
                 OpenForEdit(settings, fileName);
+
+            if (settings.UseNotification)
+                Notify(fileName);
         }
 
         protected override void Minimize(object obj)

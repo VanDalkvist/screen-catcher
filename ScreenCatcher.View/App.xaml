@@ -7,7 +7,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles\Generic.xaml"/>
                 <ResourceDictionary Source="Styles\WindowChrome.xaml"/>
-                <ResourceDictionary Source="Styles\SettingsStyle.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

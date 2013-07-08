@@ -1,32 +1,41 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows.Input;
+
 using ScreenCatcher.Common;
+using ScreenCatcher.Core;
+using ScreenCatcher.Logic;
 
 namespace ScreenCatcher.ViewModel
 {
     public class NotificationsViewModel : ViewModelBase
     {
+        protected readonly IEditorProvider _editorProvider;
+        protected readonly ICatalogViewerProvider _catalogViewerProvider;
+
         private readonly string _fileName;
 
-        public NotificationsViewModel(string fileName)
+        internal NotificationsViewModel(IEditorProvider editorProvider, ICatalogViewerProvider catalogViewerProvider, string fileName)
         {
+            _editorProvider = editorProvider;
+            _catalogViewerProvider = catalogViewerProvider ?? new DefaultCatalogViewerProvider();
             _fileName = fileName;
         }
 
-        private ICommand _openCommand;
-        public ICommand OpenCommand
+        private ICommand _editCommand;
+        public ICommand EditCommand
         {
-            get { return _openCommand ?? (_openCommand = new RelayCommand(Open)); }
+            get { return _editCommand ?? (_editCommand = new RelayCommand(Edit)); }
         }
 
-        private void Open(object obj)
+        private void Edit(object arg)
         {
-            //var settings = SettingsBase.Load<ScreenSettings>();
-            //if (settings.CurrentProgramm == Programm.Paint)
-            //{
-            Process.Start(DefaultSettings.Paint, FileName);
-            //}
+            var fileName = arg as string;
+            if (string.IsNullOrEmpty(fileName))
+                return;
+
+            var settings = SettingsProvider.GetCatcherSettings();
+            var editor = _editorProvider.Create(settings);
+            editor.Edit(fileName);
         }
 
         private ICommand _openDirectoryCommand;
@@ -37,7 +46,13 @@ namespace ScreenCatcher.ViewModel
 
         private void OpenDirectory(object obj)
         {
-            Process.Start(DefaultSettings.Explorer, Environment.CurrentDirectory);
+            var path = obj as string;
+            if (string.IsNullOrEmpty(path))
+                return;
+
+            var settings = SettingsProvider.GetCatcherSettings();
+            var catalogViewer = _catalogViewerProvider.Create(settings);
+            catalogViewer.View(path);
         }
 
         public string FileName

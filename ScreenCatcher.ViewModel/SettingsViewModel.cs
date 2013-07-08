@@ -31,13 +31,13 @@ namespace ScreenCatcher.ViewModel
 
         private bool _useNotification;
 
-        public SettingsViewModel(ScreenSettings settings)
+        internal SettingsViewModel(CatcherSettings settings)
         {
             Initialize(settings);
             Sibscribe();
         }
 
-        private void Initialize(ScreenSettings settings)
+        private void Initialize(CatcherSettings settings)
         {
             DefaultFileName = settings.DefaultFileName;
             Extension = settings.Extension;
@@ -314,7 +314,7 @@ namespace ScreenCatcher.ViewModel
 
         private void SaveSettings(object obj)
         {
-            var settings = new ScreenSettings
+            var settings = new CatcherSettings
             {
                 DefaultFileName = _defaultFileName,
                 Extension = _extension,

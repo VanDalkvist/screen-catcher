@@ -11,7 +11,7 @@ namespace ScreenCatcher.ViewModel
     public class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public event EventHandler Closed;
+        protected event EventHandler Closed;
 
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
@@ -20,8 +20,7 @@ namespace ScreenCatcher.ViewModel
                 handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        bool? _closeWindowFlag;
-
+        private bool? _closeWindowFlag;
         public bool? CloseWindowFlag
         {
             get { return _closeWindowFlag; }
@@ -32,7 +31,7 @@ namespace ScreenCatcher.ViewModel
             }
         }
 
-        public virtual void CloseWindow(bool? result = true)
+        protected virtual void CloseWindow(bool? result = true)
         {
             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() =>
             {

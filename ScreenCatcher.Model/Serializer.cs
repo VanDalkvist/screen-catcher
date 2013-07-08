@@ -7,22 +7,26 @@ using ScreenCatcher.Common;
 
 namespace ScreenCatcher.Model
 {
-    public class Serializer : SingletonInstance<Serializer>
+    public class Serializer : Singleton<Serializer>
     {
+        private Serializer()
+        {
+        }
+
         public void Serialize(object data, string fileName = null)
         {
             var storeName = string.IsNullOrEmpty(fileName) ? Constants.SettingsFileName : fileName;
 
             using (var writer = new StreamWriter(storeName))
             {
-                var serializer = new XmlSerializer(typeof(ScreenSettings));
+                var serializer = new XmlSerializer(typeof(CatcherSettings));
                 serializer.Serialize(writer, data);
             }
         }
 
         public object Deserialize(string fileName)
         {
-            var serializer = new XmlSerializer(typeof(ScreenSettings));
+            var serializer = new XmlSerializer(typeof(CatcherSettings));
 
             if (!File.Exists(fileName))
                 return null;

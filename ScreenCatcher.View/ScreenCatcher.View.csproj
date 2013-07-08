@@ -35,6 +35,24 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\Libraries\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
@@ -134,14 +152,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScreenCatcher.Common\ScreenCatcher.Common.csproj">
-      <Project>{61CAACDB-333D-4704-AB76-4F5B269FC344}</Project>
-      <Name>ScreenCatcher.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ScreenCatcher.Model\ScreenCatcher.Model.csproj">
-      <Project>{A7D1E5B9-3448-4F53-ACC7-C9FAD8833849}</Project>
-      <Name>ScreenCatcher.Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ScreenCatcher.ViewModel\ScreenCatcher.ViewModel.csproj">
       <Project>{627EDED6-F812-43AA-8E53-AC622315A86B}</Project>
       <Name>ScreenCatcher.ViewModel</Name>

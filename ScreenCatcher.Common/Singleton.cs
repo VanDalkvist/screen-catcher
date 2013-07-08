@@ -2,7 +2,7 @@ using System;
 
 namespace ScreenCatcher.Common
 {
-    public abstract class SingletonInstance<T>
+    public abstract class Singleton<T>
         where T : class
     {
         private static volatile T _instance;

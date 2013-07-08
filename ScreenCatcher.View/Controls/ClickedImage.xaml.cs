@@ -27,7 +27,7 @@ namespace ScreenCatcher.View.Controls
         private void OnMouseUp(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             if (IsPressed)
-                ClickCommand.Execute(null);
+                ClickCommand.Execute(ClickCommandParameter);
             IsPressed = false;
         }
 
@@ -43,6 +43,15 @@ namespace ScreenCatcher.View.Controls
         {
             get { return (ICommand)GetValue(ClickCommandProperty); }
             set { SetValue(ClickCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty ClickCommandParameterProperty =
+            DependencyProperty.Register("ClickCommandParameter", typeof(object), typeof(ClickedImage));
+
+        public object ClickCommandParameter
+        {
+            get { return GetValue(ClickCommandParameterProperty); }
+            set { SetValue(ClickCommandParameterProperty, value); }
         }
 
         public static readonly DependencyProperty ImageSourceProperty =

@@ -12,19 +12,20 @@ namespace ScreenCatcher.View
         public Host()
         {
             InitializeComponent();
-            DataContext = new ScreenCatcherViewModel();
+            var viewModelProvider = new MainViewModelProvider();
+            DataContext = viewModelProvider.Create();
         }
 
         private void OpenSettings(object sender, EventArgs args)
         {
-            var viewModel = DataContext as ScreenCatcherViewModel;
+            var viewModel = DataContext as ViewModelBase;
             if (viewModel == null)
                 return;
 
-            var settings = viewModel.GetScreenSettings();
+            var settingsProvider = new SettingsViewModelProvider(viewModel);
             var window = new Settings
             {
-                DataContext = new SettingsViewModel(settings)
+                DataContext = settingsProvider.Create()
             };
             window.ShowDialog();
         }
@@ -32,17 +33,6 @@ namespace ScreenCatcher.View
         private void Close(object sender, RoutedEventArgs e)
         {
             SystemCommands.CloseWindow(this);
-        }
-
-        public bool HadCaught
-        {
-            set
-            {
-                if (!value)
-                    return;
-
-                new Notification().Show();
-            }
         }
     }
 }

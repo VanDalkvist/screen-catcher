@@ -13,10 +13,10 @@ namespace ScreenCatcher.View.Controls
 
         public static readonly DependencyProperty HadCaughtProperty =
             DependencyProperty.Register("HadCaught", typeof(string), typeof(Catcher), new PropertyMetadata(HadCaughtChanged));
-        
-        public bool? HadCaught
+
+        public string HadCaught
         {
-            get { return (bool?)GetValue(HadCaughtProperty); }
+            get { return (string)GetValue(HadCaughtProperty); }
             set { SetValue(HadCaughtProperty, value); }
         }
 
@@ -29,9 +29,10 @@ namespace ScreenCatcher.View.Controls
 
         private static void Notify(string fileName)
         {
+            var provider = new NotificationsViewModelProvider(fileName);
             new Notification
             {
-                DataContext = new NotificationsViewModel(fileName)
+                DataContext = provider.Create()
             }.Show();
         }
     }

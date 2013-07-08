@@ -1,4 +1,5 @@
 using System;
+
 using ScreenCatcher.Common;
 
 namespace ScreenCatcher.Model

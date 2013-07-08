@@ -25,7 +25,8 @@
                 Width="20"
                 Height="20"
                 Margin="5"
-                ClickCommand="{Binding OpenCommand}"
+                ClickCommand="{Binding EditCommand}"
+                ClickCommandParameter="{Binding FileName, Mode=OneWay}"
                 ImageSource="/Resources/Paint.png"
                 ToolTip="Открыть с помошью Paint">
             </controls:ClickedImage>
@@ -35,6 +36,7 @@
                 Margin="5"
                 ImageSource="/Resources/Folder.png"
                 ClickCommand="{Binding OpenDirectoryCommand}"
+                ClickCommandParameter="{Binding FullFileName, Mode=OneWay}"
                 ToolTip="Показать в проводнике"/>
         </StackPanel>
     </Grid>

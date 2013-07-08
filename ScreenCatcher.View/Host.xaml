@@ -11,9 +11,14 @@
         Height="350"
         Width="525"
         Style="{StaticResource ChromeWindowStyle}"
-        d:DataContext="{d:DesignInstance vm:ScreenCatcherViewModel}"
         vm:StandardCommands.LoadCommand="{Binding Path=LoadCommand}"
-        vm:StandardCommands.UnloadCommand="{Binding Path=UnregisterCommand}">
+        vm:StandardCommands.UnloadCommand="{Binding Path=UnloadCommand}">
+    <!--<Window.Resources>
+        <ObjectDataProvider x:Key="MainViewModelProvider" ObjectType="vm:MainViewModelProvider" MethodName="Create" />
+    </Window.Resources>
+    <Window.DataContext>
+        <DynamicResource ResourceKey="MainViewModelProvider" />
+    </Window.DataContext>-->
     <Grid>
         <controls:Catcher x:Name="MainCatcher"
                           HadCaught="{Binding Path=(vm:WindowProperties.HadCaughtNotificationFileName), 

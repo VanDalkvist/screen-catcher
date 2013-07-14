@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -43,6 +45,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -52,6 +55,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
@@ -75,6 +79,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ContainerConfig.cs" />
     <Compile Include="Controls\Catcher.xaml.cs">
       <DependentUpon>Catcher.xaml</DependentUpon>
     </Compile>
@@ -152,6 +157,18 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ScreenCatcher.Common\ScreenCatcher.Common.csproj">
+      <Project>{61CAACDB-333D-4704-AB76-4F5B269FC344}</Project>
+      <Name>ScreenCatcher.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScreenCatcher.Configuration\ScreenCatcher.Configuration.csproj">
+      <Project>{798FA40E-E2CB-45DA-BB0D-4A36507D834F}</Project>
+      <Name>ScreenCatcher.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScreenCatcher.Core\ScreenCatcher.Core.csproj">
+      <Project>{6192F9D8-BF9A-4AD2-91E6-5FDF13298773}</Project>
+      <Name>ScreenCatcher.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScreenCatcher.ViewModel\ScreenCatcher.ViewModel.csproj">
       <Project>{627EDED6-F812-43AA-8E53-AC622315A86B}</Project>
       <Name>ScreenCatcher.ViewModel</Name>

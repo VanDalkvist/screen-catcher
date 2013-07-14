@@ -3,7 +3,7 @@ using ScreenCatcher.Model;
 
 namespace ScreenCatcher.Logic
 {
-    public class EditorProvider : IEditorProvider
+    public class DefaultEditorProvider : IEditorProvider
     {
         public IEditor Create(CatcherSettings settings)
         {

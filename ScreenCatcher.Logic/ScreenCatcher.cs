@@ -14,9 +14,9 @@ namespace ScreenCatcher.Logic
 
         private readonly IEditorProvider _editorProvider;
 
-        public ScreenCatcher(Window window)
+        public ScreenCatcher(Window window, IEditorProvider editorProvider)
         {
-            _editorProvider = new EditorProvider();
+            _editorProvider = editorProvider;
 
             if (_hotKeyCatcher == null)
             {
@@ -81,12 +81,7 @@ namespace ScreenCatcher.Logic
             }
 
             if (settings.UseNotification)
-                Notify(fileName);
-        }
-
-        private void Notify(string fileName)
-        {
-            OnNotifying(fileName);
+                OnNotifying(fileName);
         }
 
         public void Unload()

@@ -14,7 +14,7 @@ namespace ScreenCatcher.ViewModel
 
         private readonly string _fileName;
 
-        internal NotificationsViewModel(IEditorProvider editorProvider, ICatalogViewerProvider catalogViewerProvider, string fileName)
+        public NotificationsViewModel(IEditorProvider editorProvider, ICatalogViewerProvider catalogViewerProvider, string fileName)
         {
             _editorProvider = editorProvider;
             _catalogViewerProvider = catalogViewerProvider ?? new DefaultCatalogViewerProvider();

@@ -61,7 +61,7 @@
     <Compile Include="CatchCurrentWindowWorker.cs" />
     <Compile Include="CatcherEventHandler.cs" />
     <Compile Include="DefaultCatalogViewerProvider.cs" />
-    <Compile Include="EditorProvider.cs" />
+    <Compile Include="DefaultEditorProvider.cs" />
     <Compile Include="ExplorerViewer.cs" />
     <Compile Include="HotKeyCatcher.cs" />
     <Compile Include="HotKeyStorage.cs" />
@@ -75,7 +75,7 @@
     <Compile Include="CatchScreenWorker.cs" />
     <Compile Include="SettingsProvider.cs" />
     <Compile Include="VirtualScreen.cs" />
-    <Compile Include="WinAPI.cs" />
+    <Compile Include="NativeMethods.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScreenCatcher.Common\ScreenCatcher.Common.csproj">

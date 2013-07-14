@@ -11,5 +11,10 @@ namespace ScreenCatcher.Common.Extensions
             var helper = new WindowInteropHelper(window);
             return helper.Handle;
         }
+
+        public static HwndSource GetHwndSource(this Window window)
+        {
+            return HwndSource.FromHwnd(window.GetWindowHandle());
+        }
     }
 }

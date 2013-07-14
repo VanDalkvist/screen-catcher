@@ -1,13 +1,19 @@
+using ScreenCatcher.Configuration;
+using ScreenCatcher.ViewModel;
+
 namespace ScreenCatcher.View
 {
-    /// <summary>
-    /// Interaction logic for Settings.xaml
-    /// </summary>
     public partial class Settings
     {
         public Settings()
+            : this(UnitySingleton<SettingsViewModel>.Instance)
         {
             InitializeComponent();
+        }
+
+        public Settings(SettingsViewModel viewModel)
+        {
+            DataContext = viewModel;
         }
     }
 }

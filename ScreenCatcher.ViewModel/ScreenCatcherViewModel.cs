@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 
+using ScreenCatcher.Core;
 using ScreenCatcher.Logic;
 
 namespace ScreenCatcher.ViewModel
@@ -9,11 +10,13 @@ namespace ScreenCatcher.ViewModel
     public class ScreenCatcherViewModel : ViewModelBase
     {
         private Logic.ScreenCatcher _screenCatcher;
+        private readonly IEditorProvider _editorProvider;
 
         private Window _registeredWindow;
 
-        internal ScreenCatcherViewModel()
+        public ScreenCatcherViewModel(IEditorProvider editorProvider)
         {
+            _editorProvider = editorProvider;
         }
 
         private ICommand _loadCommand;
@@ -29,7 +32,7 @@ namespace ScreenCatcher.ViewModel
                 return;
 
             _registeredWindow = window;
-            _screenCatcher = new Logic.ScreenCatcher(window);
+            _screenCatcher = new Logic.ScreenCatcher(window, _editorProvider);
             
             Subscribe();
             

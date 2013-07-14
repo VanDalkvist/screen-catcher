@@ -3,31 +3,24 @@ using System.Windows;
 
 using Microsoft.Windows.Shell;
 
+using ScreenCatcher.Configuration;
 using ScreenCatcher.ViewModel;
 
 namespace ScreenCatcher.View
 {
     public partial class Host
     {
-        public Host()
+        public Host() : this(UnitySingleton<ScreenCatcherViewModel>.Instance) { }
+
+        public Host(ViewModelBase viewModel)
         {
             InitializeComponent();
-            var viewModelProvider = new MainViewModelProvider();
-            DataContext = viewModelProvider.Create();
+            DataContext = viewModel;
         }
 
         private void OpenSettings(object sender, EventArgs args)
         {
-            var viewModel = DataContext as ViewModelBase;
-            if (viewModel == null)
-                return;
-
-            var settingsProvider = new SettingsViewModelProvider(viewModel);
-            var window = new Settings
-            {
-                DataContext = settingsProvider.Create()
-            };
-            window.ShowDialog();
+            new Settings().ShowDialog();
         }
 
         private void Close(object sender, RoutedEventArgs e)

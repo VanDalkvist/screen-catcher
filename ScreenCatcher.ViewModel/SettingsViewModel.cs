@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Input;
 
+using ScreenCatcher.Logic;
 using ScreenCatcher.Model;
 using ModifierKeys = ScreenCatcher.Model.ModifierKeys;
 
@@ -31,14 +32,16 @@ namespace ScreenCatcher.ViewModel
 
         private bool _useNotification;
 
-        internal SettingsViewModel(CatcherSettings settings)
+        public SettingsViewModel()
         {
-            Initialize(settings);
+            Initialize();
             Sibscribe();
         }
 
-        private void Initialize(CatcherSettings settings)
+        private void Initialize()
         {
+            var settings = SettingsProvider.GetCatcherSettings();
+
             DefaultFileName = settings.DefaultFileName;
             Extension = settings.Extension;
             DefaultPath = settings.DefaultPath;

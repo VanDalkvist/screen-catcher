@@ -10,7 +10,7 @@ namespace ScreenCatcher.Logic
     {
         public void Catch(CatcherSettings settings, out string fileName)
         {
-            var bounds = WinAPI.GetActiveWindowBounds();
+            var bounds = NativeMethods.GetActiveWindowBounds();
             const int shift = 0;
             using (var bitmap = new Bitmap(bounds.Width - 2 * shift, bounds.Height - 2 * shift, PixelFormat.Format32bppArgb))
             {

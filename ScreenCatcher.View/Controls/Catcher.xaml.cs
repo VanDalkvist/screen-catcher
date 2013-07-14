@@ -1,5 +1,7 @@
 ﻿using System.Windows;
 
+using ScreenCatcher.Configuration;
+using ScreenCatcher.Core;
 using ScreenCatcher.ViewModel;
 
 namespace ScreenCatcher.View.Controls
@@ -29,11 +31,11 @@ namespace ScreenCatcher.View.Controls
 
         private static void Notify(string fileName)
         {
-            var provider = new NotificationsViewModelProvider(fileName);
-            new Notification
-            {
-                DataContext = provider.Create()
-            }.Show();
+            var editorProvider = UnitySingleton<IEditorProvider>.Instance;
+            var catalogViewerProvider = UnitySingleton<ICatalogViewerProvider>.Instance;
+            var viewModel = new NotificationsViewModel(editorProvider, catalogViewerProvider, fileName);
+            var notification = new Notification(viewModel);
+            notification.Show();
         }
     }
 }

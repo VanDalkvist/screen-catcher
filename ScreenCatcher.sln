@@ -13,6 +13,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenCatcher.Logic", "Scre
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenCatcher.Core", "ScreenCatcher.Core\ScreenCatcher.Core.csproj", "{6192F9D8-BF9A-4AD2-91E6-5FDF13298773}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{84B8588B-76AE-4B63-BFC2-3DBE9B3F8CF2}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScreenCatcher.Configuration", "ScreenCatcher.Configuration\ScreenCatcher.Configuration.csproj", "{798FA40E-E2CB-45DA-BB0D-4A36507D834F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,11 +100,22 @@ Global
 		{6192F9D8-BF9A-4AD2-91E6-5FDF13298773}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6192F9D8-BF9A-4AD2-91E6-5FDF13298773}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6192F9D8-BF9A-4AD2-91E6-5FDF13298773}.Release|x86.ActiveCfg = Release|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{798FA40E-E2CB-45DA-BB0D-4A36507D834F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35
 	EndGlobalSection
 EndGlobal

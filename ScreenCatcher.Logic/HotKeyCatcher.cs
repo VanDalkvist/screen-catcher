@@ -23,7 +23,7 @@ namespace ScreenCatcher.Logic
 
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wparam, IntPtr lparam, ref bool handled)
         {
-            if (msg == WinAPI.WmHotkey)
+            if (msg == NativeMethods.WmHotkey)
             {
                 short atom = Int16.Parse(wparam.ToString());
                 OnCaptured(atom);
@@ -48,8 +48,8 @@ namespace ScreenCatcher.Logic
         public short RegisterGlobalHotkey(Keys buttonKey, params ModifierKeys[] modifierKeys)
         {
             var modifierKey = modifierKeys.Cast<uint>().Aggregate((current, modKey) => current | modKey);
-            short atom = WinAPI.GlobalAddAtom("ScreenCatcher" + Guid.NewGuid());
-            WinAPI.RegisterHotKey(_windowHandle, atom, modifierKey, (uint)buttonKey);
+            short atom = NativeMethods.GlobalAddAtom("ScreenCatcher" + Guid.NewGuid());
+            NativeMethods.RegisterHotKey(_windowHandle, atom, modifierKey, (uint)buttonKey);
             return atom;
         }
 
@@ -57,8 +57,8 @@ namespace ScreenCatcher.Logic
         {
             foreach (var atom in storage)
             {
-                WinAPI.UnregisterHotKey(_windowHandle, atom);
-                WinAPI.GlobalDeleteAtom(atom);
+                NativeMethods.UnregisterHotKey(_windowHandle, atom);
+                NativeMethods.GlobalDeleteAtom(atom);
             }
         }
     }

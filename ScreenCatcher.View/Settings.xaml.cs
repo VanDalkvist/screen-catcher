@@ -5,14 +5,11 @@ namespace ScreenCatcher.View
 {
     public partial class Settings
     {
-        public Settings()
-            : this(UnitySingleton<SettingsViewModel>.Instance)
-        {
-            InitializeComponent();
-        }
+        public Settings() : this(Configurator.GetInstance<SettingsViewModel>()) { }
 
         public Settings(SettingsViewModel viewModel)
         {
+            InitializeComponent();
             DataContext = viewModel;
         }
     }

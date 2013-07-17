@@ -35,6 +35,11 @@
                                       Stroke="{StaticResource ForegroundBrush}"
                                       StrokeThickness="2"
                                       Data="M 2 5 L 4 10 10 2" />
+                                <Border.RenderTransform>
+                                    <RotateTransform x:Name="OverBorderRotateTransform" 
+                                                 CenterX="7" 
+                                                 CenterY="7" />
+                                </Border.RenderTransform>
                             </Border>
                         </BulletDecorator.Bullet>
                         <ContentPresenter
@@ -42,6 +47,34 @@
                             VerticalAlignment="Center"
                             HorizontalAlignment="Left"
                             RecognizesAccessKey="True"/>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="Common">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            From="-5" 
+                                            To="5"
+                                            AutoReverse="True" 
+                                            Duration="0:00:00.3" 
+                                            Storyboard.TargetName="OverBorderRotateTransform" 
+                                            Storyboard.TargetProperty="Angle"
+                                            RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                            From="0" 
+                                            To="360" 
+                                            AutoReverse="True" 
+                                            Duration="0:00:00.4" 
+                                            Storyboard.TargetName="OverBorderRotateTransform" 
+                                            Storyboard.TargetProperty="Angle" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                     </BulletDecorator>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="false">
@@ -130,7 +163,45 @@
                                 RecognizesAccessKey="True"
                                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                            <Border.RenderTransform>
+                                <RotateTransform x:Name="OverBorderRotateTransform" 
+                                                 CenterX="25" 
+                                                 CenterY="11" />
+                            </Border.RenderTransform>
                         </Border>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="Common">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <!--<ColorAnimation 
+                                            To="{StaticResource MouseOverColor}"
+                                            Duration="0:00:1"
+                                            Storyboard.TargetName="MainBorder"
+                                            Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)"/>-->
+                                        <DoubleAnimation
+                                            From="-5" 
+                                            To="5"
+                                            AutoReverse="True" 
+                                            Duration="0:00:00.3" 
+                                            Storyboard.TargetName="OverBorderRotateTransform" 
+                                            Storyboard.TargetProperty="Angle"
+                                            RepeatBehavior="Forever" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                            From="0" 
+                                            To="360" 
+                                            AutoReverse="True" 
+                                            Duration="0:00:00.4" 
+                                            Storyboard.TargetName="OverBorderRotateTransform" 
+                                            Storyboard.TargetProperty="Angle" />
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">

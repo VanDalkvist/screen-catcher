@@ -5,17 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:controls="clr-namespace:ScreenCatcher.View.Controls"
              mc:Ignorable="d">
-    <Border x:Name="MainBorder">
-        <Image Source="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ClickedImage}}}"/>
-        <!--<Grid MaxHeight="18" MaxWidth="16">
-            <Path 
-                Stroke="{StaticResource ForegroundBrush}"
-                Stretch="Fill"
-                StrokeEndLineCap="Square"
-                StrokeStartLineCap="Square"
-                Data="M2,2 L6,6 M2,2 L2,12 M6,6 L6,16 M2,12 L6,16 M2,2 L14,4 M14,4 L14,14 M6,12 L14,14">
-            </Path>
-        </Grid>-->
+    <Border>
+        <Image Source="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ClickedImage}}}" Focusable="False"/>
         <Border.Style>
             <Style BasedOn="{StaticResource MainChromeBorder}" TargetType="{x:Type Border}">
                 <Style.Triggers>

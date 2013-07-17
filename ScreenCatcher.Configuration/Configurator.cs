@@ -18,5 +18,10 @@ namespace ScreenCatcher.Configuration
         {
             Bootstrapper.Container.RegisterSelf<T>();
         }
+
+        public static T GetInstance<T>()
+        {
+            return Bootstrapper.Container.Resolve<T>();
+        }
     }
 }

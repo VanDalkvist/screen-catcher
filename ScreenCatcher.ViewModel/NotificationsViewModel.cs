@@ -9,8 +9,8 @@ namespace ScreenCatcher.ViewModel
 {
     public class NotificationsViewModel : ViewModelBase
     {
-        protected readonly IEditorProvider _editorProvider;
-        protected readonly ICatalogViewerProvider _catalogViewerProvider;
+        private readonly IEditorProvider _editorProvider;
+        private readonly ICatalogViewerProvider _catalogViewerProvider;
 
         private readonly string _fileName;
 

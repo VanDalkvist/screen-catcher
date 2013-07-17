@@ -9,11 +9,6 @@ namespace ScreenCatcher.View.Controls
         {
             InitializeComponent();
 
-            Subscribe();
-        }
-
-        private void Subscribe()
-        {
             MouseDown += OnMouseDown;
             MouseUp += OnMouseUp;
             MouseLeave += OnMouseLeave;

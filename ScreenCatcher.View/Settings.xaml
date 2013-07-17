@@ -106,10 +106,10 @@
                     </Grid>
                     <Grid
                         Grid.Row="3">
-                        <CheckBox x:Name="UseNotificationCheck"
-                                  IsChecked="{Binding Path=UseNotification, Mode=TwoWay}"
-                                  Content="Включить уведомления"
-                                  HorizontalAlignment="Left" />
+                        <CheckBox
+                            IsChecked="{Binding Path=UseNotification, Mode=TwoWay}"
+                            Content="Включить уведомления"
+                            HorizontalAlignment="Left" />
                     </Grid>
                 </Grid>
             </GroupBox>
